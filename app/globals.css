@@ -1,26 +1,113 @@
 @import "tailwindcss";
 
+@theme {
+  --color-primary: #E05D3A;
+  --color-background-dark: #020617;
+  --color-background-darker: #000205;
+  --color-glass-border: rgba(255, 255, 255, 0.06);
+
+  --font-display: var(--font-space-grotesk), sans-serif;
+  --font-mono: var(--font-space-grotesk), monospace;
+
+  --background-image-grid-pattern: linear-gradient(to right, #0f172a 1px, transparent 1px), linear-gradient(to bottom, #0f172a 1px, transparent 1px);
+  
+  --radius-3xl: 1.5rem;
+  --radius-4xl: 2.5rem;
+}
+
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  --background: #020617;
+  --foreground: #ededed;
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-display);
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: #020617; 
+}
+::-webkit-scrollbar-thumb {
+  background: #1e293b; 
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #E05D3A; 
+}
+
+/* Glassmorphism Utilities */
+@layer utilities {
+  .glass-panel {
+    background: rgba(2, 6, 23, 0.4);
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+  }
+  .glass-panel-heavy {
+    background: rgba(2, 6, 23, 0.8);
+    backdrop-filter: blur(40px);
+    -webkit-backdrop-filter: blur(40px);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+  }
+  .liquid-glass {
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+  }
+  .liquid-btn {
+    background: rgba(255, 255, 255, 0.03);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    transition: all 0.3s ease;
+  }
+  .liquid-btn:hover {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: rgba(224, 93, 58, 0.5);
+    box-shadow: 0 0 20px rgba(224, 93, 58, 0.2);
+  }
+  .neon-glow {
+    text-shadow: 0 0 20px rgba(224, 93, 58, 0.5);
+  }
+  .button-glow {
+    box-shadow: 0 0 30px rgba(224, 93, 58, 0.3);
+    transition: all 0.3s ease;
+  }
+  .button-glow:hover {
+    box-shadow: 0 0 50px rgba(224, 93, 58, 0.6);
+    transform: scale(1.02);
+  }
+  .grid-bg {
+    background-size: 40px 40px;
+    mask-image: linear-gradient(to bottom, transparent, black, transparent);
+    -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 20%, black 80%, transparent 100%);
+  }
+  .hover-glow-primary {
+    box-shadow: 0 30px 60px -10px rgba(0, 0, 0, 0.5);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    transition: all 0.4s ease-out;
+  }
+  .hover-glow-primary:hover {
+    box-shadow: 0 0 60px rgba(224, 93, 58, 0.3), 0 40px 100px -10px rgba(224, 93, 58, 0.4);
+    border-color: #E05D3A;
+    transform: translateY(-5px);
+  }
+  .signature-glow {
+    filter: drop-shadow(0 0 5px rgba(255, 255, 255, 0.8)) drop-shadow(0 0 10px rgba(255, 255, 255, 0.4));
+  }
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
 }

@@ -1,65 +1,203 @@
-import Image from "next/image";
+import Navbar from "@/components/layout/Navbar";
+import Hero from "@/components/home/Hero";
+import ServiceGrid from "@/components/home/ServiceGrid";
+import Founder from "@/components/home/Founder";
+import Testimonials from "@/components/home/Testimonials";
+import Link from "next/link";
+import { Calendar, DraftingCompass } from "lucide-react";
 
 export default function Home() {
   return (
-    <div className="flex min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex min-h-screen w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
-        </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
+    <>
+      <Navbar />
+      <main className="min-h-screen bg-background-dark text-white font-display overflow-x-hidden selection:bg-primary selection:text-white">
+        <Hero />
+
+        {/* Stats Section */}
+        <section className="relative py-24 border-y border-white/5 bg-background-dark">
+          <div className="absolute inset-0 bg-grid-pattern opacity-[0.15] grid-bg pointer-events-none"></div>
+          <div className="container mx-auto px-6 relative z-10">
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-12 text-center">
+              <div className="group">
+                <div className="text-5xl md:text-7xl font-mono font-bold text-primary neon-glow mb-2 group-hover:scale-110 transition-transform duration-500">
+                  100%
+                </div>
+                <div className="text-white/40 text-sm uppercase tracking-widest font-semibold group-hover:text-white/60 transition-colors">
+                  Tasso Approvazione
+                </div>
+              </div>
+              <div className="group">
+                <div className="text-5xl md:text-7xl font-mono font-bold text-white mb-2 group-hover:text-primary transition-colors duration-300">
+                  15+
+                </div>
+                <div className="text-white/40 text-sm uppercase tracking-widest font-semibold group-hover:text-white/60 transition-colors">
+                  Anni Esperienza
+                </div>
+              </div>
+              <div className="group">
+                <div className="text-5xl md:text-7xl font-mono font-bold text-white mb-2 group-hover:text-primary transition-colors duration-300">
+                  500
+                </div>
+                <div className="text-white/40 text-sm uppercase tracking-widest font-semibold group-hover:text-white/60 transition-colors">
+                  Progetti Complessi
+                </div>
+              </div>
+              <div className="group">
+                <div className="text-5xl md:text-7xl font-mono font-bold text-white mb-2 group-hover:text-primary transition-colors duration-300">
+                  24h
+                </div>
+                <div className="text-white/40 text-sm uppercase tracking-widest font-semibold group-hover:text-white/60 transition-colors">
+                  Risposta Garantita
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <ServiceGrid />
+
+        <Founder />
+
+        {/* Why Choose Apex Section */}
+        <section className="py-24 px-4 bg-background-dark">
+          <div className="max-w-5xl mx-auto">
+            <div className="text-center mb-16">
+              <span className="text-primary text-sm font-bold uppercase tracking-widest mb-2 block">
+                Il Vantaggio Competitivo
+              </span>
+              <h2 className="text-4xl font-bold">Perché scegliere APEX</h2>
+            </div>
+            <div className="glass-panel rounded-3xl overflow-hidden border border-white/5 bg-[#020617]/40">
+              <div className="overflow-x-auto">
+                <table className="w-full text-left border-collapse">
+                  <thead>
+                    <tr className="border-b border-white/5 bg-white/5">
+                      <th className="p-6 text-sm font-bold uppercase tracking-wider text-white/50 w-1/3">
+                        Caratteristica
+                      </th>
+                      <th className="p-6 text-lg font-bold text-white w-1/3">
+                        <span className="flex items-center gap-2">
+                          <span className="w-2 h-2 rounded-full bg-primary"></span>
+                          STUDIO APEX
+                        </span>
+                      </th>
+                      <th className="p-6 text-lg font-bold text-white/30 w-1/3">
+                        Geometra Generico
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-white/5">
+                    <tr className="hover:bg-white/5 transition-colors">
+                      <td className="p-6 font-medium text-white/70">
+                        Tempi di Evasione
+                      </td>
+                      <td className="p-6 text-primary font-bold">
+                        Accellerati (24-48h)
+                      </td>
+                      <td className="p-6 text-white/30">Standard (Settimane)</td>
+                    </tr>
+                    <tr className="hover:bg-white/5 transition-colors">
+                      <td className="p-6 font-medium text-white/70">
+                        Gestione Burocrazia
+                      </td>
+                      <td className="p-6 text-white">
+                        <span className="flex items-center gap-2 text-green-400 font-bold">
+                          {/* Using text for check/cancel to avoid extra imports for now, or could import CheckCircle/X */}
+                          ✓ Totale & Digitale
+                        </span>
+                      </td>
+                      <td className="p-6 text-white/30 flex items-center gap-2">
+                        ✕ Parziale / Cartacea
+                      </td>
+                    </tr>
+                    <tr className="hover:bg-white/5 transition-colors">
+                      <td className="p-6 font-medium text-white/70">
+                        Reportistica
+                      </td>
+                      <td className="p-6 text-white">
+                        <span className="flex items-center gap-2 text-green-400 font-bold">
+                          ✓ Real-time Dashboard
+                        </span>
+                      </td>
+                      <td className="p-6 text-white/30 flex items-center gap-2">
+                        ✕ Email / Telefono
+                      </td>
+                    </tr>
+                    <tr className="hover:bg-white/5 transition-colors">
+                      <td className="p-6 font-medium text-white/70">
+                        Consulenza Legale
+                      </td>
+                      <td className="p-6 text-white">
+                        <span className="flex items-center gap-2 text-green-400 font-bold">
+                          ✓ Inclusa nel Team
+                        </span>
+                      </td>
+                      <td className="p-6 text-white/30 flex items-center gap-2">
+                        ✕ Esterna
+                      </td>
+                    </tr>
+                    <tr className="hover:bg-white/5 transition-colors">
+                      <td className="p-6 font-medium text-white/70">
+                        Tecnologia Rilievo
+                      </td>
+                      <td className="p-6 text-white">
+                        <span className="flex items-center gap-2 text-green-400 font-bold">
+                          ✓ Laser Scanner / Droni
+                        </span>
+                      </td>
+                      <td className="p-6 text-white/30 flex items-center gap-2">
+                        ✕ Nastro Metrico
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <Testimonials />
+
+        {/* CTA Section */}
+        <section id="contact" className="py-20 relative overflow-hidden">
+          <div className="absolute inset-0 bg-primary/5"></div>
+          <div className="absolute inset-0 bg-gradient-to-t from-background-dark via-background-dark/80 to-transparent"></div>
+          <div className="container mx-auto px-4 relative z-10 text-center max-w-3xl">
+            <h2 className="text-5xl md:text-6xl font-black mb-8 tracking-tight">
+              PRONTO A COSTRUIRE?
+            </h2>
+            <p className="text-xl text-white/50 mb-10">
+              Prenota una chiamata conoscitiva gratuita di 15 minuti. Analizziamo
+              il tuo caso, definiamo la strategia.
+            </p>
+            <button className="button-glow bg-primary text-white text-xl font-bold px-12 py-5 rounded-full inline-flex items-center gap-3 hover:bg-[#ff6b42] transform transition-transform hover:-translate-y-1">
+              <span>Inizia Ora</span>
+              <Calendar className="w-6 h-6" />
+            </button>
+          </div>
+        </section>
+
+        <footer className="bg-background-darker border-t border-white/5 py-12 text-sm text-white/30">
+          <div className="container mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-6">
+            <div className="flex items-center gap-2">
+              <DraftingCompass className="text-white/60 w-6 h-6" />
+              <span className="font-bold text-white text-lg">APEX</span>
+            </div>
+            <div className="flex gap-8">
+              <Link className="hover:text-white transition-colors" href="#">
+                Privacy Policy
+              </Link>
+              <Link className="hover:text-white transition-colors" href="#">
+                Termini di Servizio
+              </Link>
+              <Link className="hover:text-white transition-colors" href="#">
+                Lavora con Noi
+              </Link>
+            </div>
+            <p>© 2023 Apex Surveying S.r.l. - P.IVA 12345678901</p>
+          </div>
+        </footer>
       </main>
-    </div>
+    </>
   );
 }
