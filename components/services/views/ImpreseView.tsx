@@ -3,7 +3,6 @@ import { PrimaryButton } from "@/components/ui/PrimaryButton";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { FeatureCard } from "@/components/ui/FeatureCard";
 import {
-    Building,
     TrendingDown,
     Handshake,
     Gavel,
@@ -12,11 +11,9 @@ import {
     ShieldCheck,
     FileText,
     CheckCircle,
-    ArrowRight,
-    Check
 } from "lucide-react";
-import { DollarSign, CheckCheck } from "lucide-react";
 import Image from "next/image";
+import ImpreseForm from "@/components/forms/ImpreseForm"; // ✅ Correct Import
 
 export default function ImpreseView() {
     return (
@@ -181,7 +178,6 @@ export default function ImpreseView() {
                                     </tr>
                                 </thead>
                                 <tbody className="divide-y divide-white/5 font-mono text-sm">
-                                    {/* Rows */}
                                     <tr className="hover:bg-white/5 transition-colors group">
                                         <td className="p-5 font-bold text-white text-lg group-hover:text-primary transition-colors">OG1</td>
                                         <td className="p-5 text-slate-300">Edifici Civili e Industriali</td>
@@ -225,21 +221,6 @@ export default function ImpreseView() {
                                             </button>
                                         </td>
                                     </tr>
-                                    <tr className="hover:bg-white/5 transition-colors group bg-[#1e293b]/20">
-                                        <td className="p-5 font-bold text-white text-lg group-hover:text-primary transition-colors">OS6 / OS18</td>
-                                        <td className="p-5 text-slate-300">Finiture / Serramenti</td>
-                                        <td className="p-5 text-slate-500">I / II</td>
-                                        <td className="p-5">
-                                            <span className="inline-flex items-center gap-2 px-3 py-1 rounded bg-green-900/20 text-green-400 border border-green-900/30 uppercase text-xs font-bold shadow-[0_0_10px_rgba(74,222,128,0.1)]">
-                                                <span className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse"></span> Available
-                                            </span>
-                                        </td>
-                                        <td className="p-5 text-right">
-                                            <button className="text-primary hover:text-white border border-primary hover:bg-primary px-4 py-1.5 rounded text-xs font-bold uppercase transition-all shadow-[0_0_15px_rgba(255,90,54,0.2)]">
-                                                Blocca Slot
-                                            </button>
-                                        </td>
-                                    </tr>
                                 </tbody>
                             </table>
                         </div>
@@ -247,7 +228,7 @@ export default function ImpreseView() {
                 </div>
             </section>
 
-            {/* Application Form */}
+            {/* ✅ NEW SMART FORM SECTION */}
             <section id="contact" className="py-24 relative bg-[#020617] border-t border-white/5">
                 <div className="container mx-auto px-6 relative z-10">
                     <GlassPanel className="max-w-4xl mx-auto md:p-12 border-primary/30 shadow-[0_0_40px_rgba(224,93,58,0.1)]">
@@ -262,61 +243,11 @@ export default function ImpreseView() {
                                 Non accettiamo tutte le imprese. Verifichiamo solidità finanziaria e capacità tecnica. Compila il modulo per avviare l'istruttoria.
                             </p>
                         </div>
-                        <form className="grid md:grid-cols-2 gap-6 max-w-3xl mx-auto">
-                            <div className="col-span-2">
-                                <label className="block text-xs font-bold text-primary uppercase tracking-widest mb-2">Ragione Sociale Impresa</label>
-                                <input
-                                    className="w-full bg-[#020412] border border-white/10 rounded px-4 py-3 text-white placeholder-slate-600 focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all font-display"
-                                    placeholder="Es. Edilizia Futura S.r.l." type="text"
-                                />
-                            </div>
-                            <div className="col-span-2 md:col-span-1">
-                                <label className="block text-xs font-bold text-primary uppercase tracking-widest mb-2">Categoria Prevalente</label>
-                                <select className="w-full bg-[#020412] border border-white/10 rounded px-4 py-3 text-white focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all font-display appearance-none cursor-pointer">
-                                    <option>Seleziona Categoria...</option>
-                                    <option>OG1 - Edifici Civili</option>
-                                    <option>OS30 - Impianti Elettrici</option>
-                                    <option>OS3 - Impianti Idrici</option>
-                                    <option>OS6 - Finiture</option>
-                                    <option>Altro</option>
-                                </select>
-                            </div>
-                            <div className="col-span-2 md:col-span-1">
-                                <label className="block text-xs font-bold text-primary uppercase tracking-widest mb-2">Attestazione SOA</label>
-                                <select className="w-full bg-[#020412] border border-white/10 rounded px-4 py-3 text-white focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all font-display appearance-none cursor-pointer">
-                                    <option>Seleziona Classifica...</option>
-                                    <option>Nessuna</option>
-                                    <option>I / II Classifica</option>
-                                    <option>III / III-BIS Classifica</option>
-                                    <option>IV o Superiore</option>
-                                </select>
-                            </div>
-                            <div className="col-span-2 md:col-span-1">
-                                <label className="block text-xs font-bold text-primary uppercase tracking-widest mb-2">Fatturato Ultimo Anno</label>
-                                <input
-                                    className="w-full bg-[#020412] border border-white/10 rounded px-4 py-3 text-white placeholder-slate-600 focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all font-display"
-                                    placeholder="€ 0,00" type="text"
-                                />
-                            </div>
-                            <div className="col-span-2 md:col-span-1">
-                                <label className="block text-xs font-bold text-primary uppercase tracking-widest mb-2">Principale Ostacolo Attuale</label>
-                                <select className="w-full bg-[#020412] border border-white/10 rounded px-4 py-3 text-white focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all font-display appearance-none cursor-pointer">
-                                    <option>Ritardi Pagamenti</option>
-                                    <option>Marginalità Bassa</option>
-                                    <option>Discontinuità Lavoro</option>
-                                    <option>Burocrazia</option>
-                                </select>
-                            </div>
-                            <div className="col-span-2 pt-6">
-                                <PrimaryButton className="w-full h-16 text-lg uppercase tracking-wider">
-                                    Invia Candidatura Ufficiale
-                                    <ArrowRight className="w-5 h-5" />
-                                </PrimaryButton>
-                                <p className="text-center text-[10px] text-slate-500 mt-4 uppercase tracking-wider">
-                                    I dati saranno trattati secondo normativa GDPR vigente. Riservato titolari d'impresa.
-                                </p>
-                            </div>
-                        </form>
+
+                        <div className="max-w-3xl mx-auto">
+                            <ImpreseForm />
+                        </div>
+
                     </GlassPanel>
                 </div>
             </section>
