@@ -1,7 +1,6 @@
 'use server'
 
 import { supabase } from '@/lib/supabase'
-import { revalidatePath } from 'next/cache'
 
 export async function submitImprese(formData: FormData) {
     const rawData = {
@@ -12,7 +11,8 @@ export async function submitImprese(formData: FormData) {
         principale_ostacolo: formData.get('principale_ostacolo'),
     }
 
-    // 1. Save to Supabase
+    console.log('Attempting to save:', rawData)
+
     const { error } = await supabase
         .from('imprese_leads')
         .insert([rawData])
@@ -22,9 +22,5 @@ export async function submitImprese(formData: FormData) {
         return { success: false, message: 'Errore nel salvataggio dati.' }
     }
 
-    // 2. Revalidate (Refresh) the page so the form resets
-    revalidatePath('/services/imprese')
-
-    // 3. Return success
     return { success: true, message: 'Candidatura inviata con successo!' }
 }
