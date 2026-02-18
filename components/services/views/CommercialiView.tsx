@@ -3,7 +3,6 @@
 import { GlassPanel } from "@/components/ui/GlassPanel";
 import { PrimaryButton } from "@/components/ui/PrimaryButton";
 import { FeatureCard } from "@/components/ui/FeatureCard";
-// 👇 IMPORT SERVER ACTION
 import { submitCommerciali } from '@/app/actions/submit-commerciali'
 import {
     ArrowRight,
@@ -26,9 +25,9 @@ import {
     Fan,
     Landmark,
     ChevronDown,
-    Loader2, // Added
-    AlertCircle, // Added
-    CheckCircle // Added
+    Loader2,
+    AlertCircle,
+    CheckCircle
 } from "lucide-react";
 import Image from "next/image";
 import { useState } from "react";
@@ -149,6 +148,29 @@ export default function CommercialiView() {
                                 <span>Come funziona</span>
                             </button>
                         </div>
+
+                        {/* REVIEWS SECTION */}
+                        <div className="flex items-center gap-4 pt-4 border-t border-white/5 mt-4">
+                            <div className="flex -space-x-3">
+                                <div className="size-10 rounded-full border-2 border-[#020412] bg-gray-800 relative overflow-hidden">
+                                    <Image src="https://lh3.googleusercontent.com/aida-public/AB6AXuAv08b89ohkwl_gXEPwnomdxPE1RruluNGd6gzWdLra8p8xZ2r26yfx-LfIAfDQcI-JVn894tdMAoPr9bwa1H-Gv3UVLRwFBxMLO_1KZB4aBa0h1K5DWGHl4rgNy2O9h6ZMG01q6z7TPcBuqywT58rd_BAgO5tP2a9TSpTlZej7WMnmR_I2ANacBlmKK6f4wGCADsJzUzxPReqxCINrrtDC1LMdxVybiDfsRvOJrxZ0HsL4dSFoay_HzMef9Zh9EyzeU_aA4aK0Zvg" alt="Reviewer" fill className="object-cover" />
+                                </div>
+                                <div className="size-10 rounded-full border-2 border-[#020412] bg-gray-800 relative overflow-hidden">
+                                    <Image src="https://lh3.googleusercontent.com/aida-public/AB6AXuCbdtgOLwbySX31O2_hPqMJSxygMGaf3_cTDM_GI1dQUuF7Xqa0q5mG-I6pyj6piv-4_ZFim5JmPOx45_vDbTP5_SS3AJ8kt0V1LB0tlw9xmA0HUzf3uemrwxNjUEd0M2jA__qCOFqfOFaP_jIKp221YLJ0dtbXyJFLwm9YVSkJtc7Jn6DH0ptGgrgbrL-iMSx7CIKMtvR7jeSZ-ykvOESa6XU3ThMBYqKuDq0aNIR3dxTw9eLJUyc_I4OzJeB03OD5-zqB1h4VWhE" alt="Reviewer" fill className="object-cover" />
+                                </div>
+                                <div className="size-10 rounded-full border-2 border-[#020412] bg-gray-800 relative overflow-hidden">
+                                    <Image src="https://lh3.googleusercontent.com/aida-public/AB6AXuBx9du2yuczR6PK3vFFO9-mYOVex1ZFfcdZdBktDg_YSx0IiZBB4SoUx5RrvtOr1lnD3aKOGXe3Hjci-RWxR_FlT10ndRxj_n273hlp3B3ZWVAo3M2RJ1k5rcvVWcXPfSI3vEqt7H1Pow3zBCKZNE5798imqei9Gp-AQoVwbQTN0dMctDh8evXAKNWc4fIFvM3n32rt3i1_PmA8LprsWzuSaDcg1ZmbRzDJDqn9BIj7AP5bIWddx_ONlRLEqtzksedTCGQnzpPKiog" alt="Reviewer" fill className="object-cover" />
+                                </div>
+                                <div className="size-10 rounded-full border-2 border-[#020412] bg-gray-800 flex items-center justify-center text-xs font-bold text-white">
+                                    +150
+                                </div>
+                            </div>
+                            <div className="flex flex-col">
+                                <div className="flex text-primary text-sm gap-0.5">★★★★★</div>
+                                <span className="text-xs text-slate-400">Locali aperti a Torino</span>
+                            </div>
+                        </div>
+
                     </div>
 
                     {/* 3D Visual */}
@@ -474,6 +496,7 @@ export default function CommercialiView() {
                                 <div className="space-y-2">
                                     <label className="text-xs font-bold uppercase text-slate-400 tracking-wider ml-1">Tipo di locale</label>
                                     <div className="relative">
+                                        {/* 👇 THE FIX IS HERE 👇 */}
                                         <select
                                             name="locale-type"
                                             required
