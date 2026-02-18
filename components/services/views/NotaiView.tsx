@@ -17,6 +17,14 @@ export default function NotaiView() {
     // 👇 PROTOCOL SECTION STATE
     const [activeStep, setActiveStep] = useState(0);
 
+    // 👇 SCROLL FUNCTION (Fixes the Navbar Links)
+    const scrollToSection = (id: string) => {
+        const element = document.getElementById(id);
+        if (element) {
+            element.scrollIntoView({ behavior: 'smooth' });
+        }
+    };
+
     async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
         event.preventDefault()
         const form = event.currentTarget
@@ -78,6 +86,27 @@ export default function NotaiView() {
     return (
         <div className="min-h-screen bg-[#020412] text-slate-400 font-display selection:bg-[#FF5A36] selection:text-white overflow-x-hidden">
 
+            {/* HEADER / NAVBAR */}
+            <header className="fixed top-0 left-0 right-0 z-50 bg-[#1e293b]/40 backdrop-blur-xl border-b border-white/5">
+                <div className="max-w-[1280px] mx-auto px-6 h-16 flex items-center justify-between">
+                    <div className="flex items-center gap-3">
+                        <div className="size-8 rounded-lg bg-[#FF5A36]/20 flex items-center justify-center text-[#FF5A36] shadow-[0_0_15px_rgba(255,90,54,0.3)]">
+                            <Landmark className="w-5 h-5" />
+                        </div>
+                        <h2 className="text-white text-lg font-bold tracking-tight">STUDIO APEX</h2>
+                    </div>
+                    {/* 👇 NAVIGATION LINKS NOW WORK */}
+                    <div className="hidden md:flex items-center gap-8">
+                        <button onClick={() => scrollToSection('protocol')} className="text-sm text-slate-400 hover:text-white transition-colors font-medium">Protocollo</button>
+                        <button onClick={() => scrollToSection('problems')} className="text-sm text-slate-400 hover:text-white transition-colors font-medium">Problemi</button>
+                        <button onClick={() => scrollToSection('comparison')} className="text-sm text-slate-400 hover:text-white transition-colors font-medium">Chi Siamo</button>
+                    </div>
+                    <button onClick={() => scrollToSection('contact-form')} className="bg-[#FF5A36]/10 hover:bg-[#FF5A36]/20 border border-[#FF5A36]/30 text-[#FF5A36] text-xs font-bold font-mono px-4 py-2 rounded-lg transition-all flex items-center gap-2 hover:shadow-[0_0_15px_rgba(255,90,54,0.2)]">
+                        <Lock className="w-4 h-4" /> AREA RISERVATA
+                    </button>
+                </div>
+            </header>
+
             {/* HERO SECTION */}
             <section className="relative pt-32 pb-20 px-6 lg:px-20 overflow-hidden bg-[radial-gradient(circle_at_50%_0%,rgba(255,90,54,0.15)_0%,rgba(2,4,18,0)_60%)]">
                 <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[600px] bg-[#FF5A36]/5 rounded-full blur-[100px] pointer-events-none"></div>
@@ -96,20 +125,20 @@ export default function NotaiView() {
                             Il partner tecnico definitivo per notai che non accettano compromessi. Precisione ingegneristica per rogiti blindati e conformità garantita.
                         </p>
                         <div className="flex flex-wrap gap-4 mt-2">
-                            <button onClick={() => document.getElementById('contact-form')?.scrollIntoView({ behavior: 'smooth' })} className="group relative overflow-hidden rounded-xl bg-[#FF5A36] px-8 py-4 font-bold text-white shadow-[0_0_20px_rgba(255,90,54,0.4)] hover:shadow-[0_0_30px_rgba(255,90,54,0.6)] transition-all">
+                            <button onClick={() => scrollToSection('contact-form')} className="group relative overflow-hidden rounded-xl bg-[#FF5A36] px-8 py-4 font-bold text-white shadow-[0_0_20px_rgba(255,90,54,0.4)] hover:shadow-[0_0_30px_rgba(255,90,54,0.6)] transition-all">
                                 <span className="relative z-10 flex items-center gap-2">
                                     RICHIEDI AUDIT
                                     <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
                                 </span>
                             </button>
-                            <button className="group flex items-center gap-2 rounded-xl border border-white/10 bg-white/5 px-8 py-4 font-bold text-white hover:bg-white/10 transition-all backdrop-blur-sm">
+                            <button onClick={() => scrollToSection('protocol')} className="group flex items-center gap-2 rounded-xl border border-white/10 bg-white/5 px-8 py-4 font-bold text-white hover:bg-white/10 transition-all backdrop-blur-sm">
                                 <PlayCircle className="w-5 h-5" />
                                 COME FUNZIONA
                             </button>
                         </div>
                     </div>
 
-                    {/* 3D CARD ANIMATION FIXED WITH FRAMER MOTION */}
+                    {/* 3D CARD ANIMATION */}
                     <motion.div
                         className="relative z-10 flex justify-center lg:justify-end"
                         animate={{ y: [0, -20, 0] }}
@@ -164,13 +193,11 @@ export default function NotaiView() {
                                     <div><div className="text-[10px] text-slate-500 font-mono">APE</div><div className="text-sm font-bold text-white">CLASSE A1</div></div>
                                 </div>
                             </div>
-                            {/* SCANNING LINE ANIMATION */}
                             <motion.div
                                 className="absolute inset-x-0 h-1 bg-[#FF5A36]/50 blur-[2px] z-20 shadow-[0_0_15px_rgba(255,90,54,0.6)]"
                                 animate={{ top: ["0%", "100%"] }}
                                 transition={{ duration: 3, repeat: Infinity, ease: "linear" }}
                             />
-                            {/* GRADIENT SCAN ANIMATION */}
                             <motion.div
                                 className="absolute inset-0 bg-gradient-to-b from-[#FF5A36]/5 to-transparent z-10 opacity-30 pointer-events-none"
                                 animate={{ top: ["0%", "100%"] }}
@@ -181,8 +208,8 @@ export default function NotaiView() {
                 </div>
             </section>
 
-            {/* PROBLEM SECTION */}
-            <section className="py-20 px-6 lg:px-20 bg-gradient-to-b from-[#020412] to-[#0f172a]">
+            {/* PROBLEM SECTION (ID="problems") */}
+            <section id="problems" className="py-20 px-6 lg:px-20 bg-gradient-to-b from-[#020412] to-[#0f172a]">
                 <div className="max-w-[1280px] mx-auto">
                     <div className="mb-12">
                         <h2 className="text-3xl font-extrabold tracking-tight mb-4 text-white">PERCHÉ GLI ATTI SALTANO</h2>
@@ -196,8 +223,8 @@ export default function NotaiView() {
                 </div>
             </section>
 
-            {/* PROTOCOL SECTION */}
-            <section className="py-24 px-6 lg:px-20 bg-[#0f172a]">
+            {/* PROTOCOL SECTION (ID="protocol") */}
+            <section id="protocol" className="py-24 px-6 lg:px-20 bg-[#0f172a]">
                 <div className="max-w-[1280px] mx-auto">
                     <div className="text-center mb-16">
                         <h2 className="text-3xl lg:text-4xl font-extrabold mb-4 text-white">IL PROTOCOLLO <span className="text-[#FF5A36] drop-shadow-[0_0_15px_rgba(255,90,54,0.6)]">APEX</span></h2>
@@ -255,8 +282,8 @@ export default function NotaiView() {
                 </div>
             </section>
 
-            {/* COMPARISON SECTION */}
-            <section className="py-20 px-6 lg:px-20 bg-gradient-to-b from-[#0f172a] to-[#020412]">
+            {/* COMPARISON SECTION (ID="comparison") */}
+            <section id="comparison" className="py-20 px-6 lg:px-20 bg-gradient-to-b from-[#0f172a] to-[#020412]">
                 <div className="max-w-[960px] mx-auto">
                     <div className="bg-[#1e293b]/40 backdrop-blur-xl rounded-3xl overflow-hidden border border-white/10">
                         <div className="grid grid-cols-1 md:grid-cols-2">
@@ -282,7 +309,7 @@ export default function NotaiView() {
                 </div>
             </section>
 
-            {/* FORM SECTION - WIRED UP 🚀 */}
+            {/* FORM SECTION (ID="contact-form") */}
             <section id="contact-form" className="py-32 px-6 lg:px-20 relative overflow-hidden bg-gradient-to-t from-[#020412] to-[#0f172a]">
                 <div className="max-w-[800px] mx-auto relative z-10">
                     <div className="bg-[#1e293b]/40 backdrop-blur-xl rounded-3xl p-10 lg:p-16 text-center border-t border-[#FF5A36]/20 shadow-[0_0_50px_rgba(0,0,0,0.5)]">
