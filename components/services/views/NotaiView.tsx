@@ -109,8 +109,12 @@ export default function NotaiView() {
                         </div>
                     </div>
 
-                    {/* 3D CARD */}
-                    <div className="relative z-10 flex justify-center lg:justify-end animate-[float_6s_ease-in-out_infinite]">
+                    {/* 3D CARD ANIMATION FIXED WITH FRAMER MOTION */}
+                    <motion.div
+                        className="relative z-10 flex justify-center lg:justify-end"
+                        animate={{ y: [0, -20, 0] }}
+                        transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
+                    >
                         <div className="relative w-full max-w-[500px] aspect-[4/3] rounded-3xl bg-[#1e293b]/40 backdrop-blur-xl border border-white/10 overflow-hidden shadow-[0_0_30px_rgba(255,90,54,0.15)]">
                             <div className="absolute top-0 w-full h-12 border-b border-white/10 flex items-center px-4 justify-between bg-black/20">
                                 <div className="flex gap-2">
@@ -133,14 +137,47 @@ export default function NotaiView() {
                                     </div>
                                 </div>
 
+                                <div className="relative w-full h-32 bg-gradient-to-r from-blue-900/20 to-purple-900/20 rounded-lg border border-white/5 flex items-center justify-center overflow-hidden">
+                                    <div className="absolute inset-0" style={{ backgroundImage: "linear-gradient(rgba(255,255,255,0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.05) 1px, transparent 1px)", backgroundSize: "20px 20px" }}></div>
+                                    <div className="flex gap-4">
+                                        <div className="bg-white/10 backdrop-blur border border-white/10 p-2 rounded flex flex-col items-center w-20">
+                                            <FileText className="text-slate-400 w-5 h-5 mb-2" />
+                                            <div className="w-12 h-1 bg-slate-600 rounded mt-2"></div>
+                                            <div className="w-8 h-1 bg-slate-600 rounded mt-1"></div>
+                                        </div>
+                                        <div className="bg-[#FF5A36]/10 backdrop-blur border border-[#FF5A36]/30 p-2 rounded flex flex-col items-center w-20 scale-110 shadow-lg relative z-10">
+                                            <ShieldCheck className="text-[#FF5A36] w-5 h-5 mb-2" />
+                                            <div className="w-12 h-1 bg-[#FF5A36]/40 rounded mt-2"></div>
+                                            <div className="w-10 h-1 bg-[#FF5A36]/40 rounded mt-1"></div>
+                                        </div>
+                                        <div className="bg-white/10 backdrop-blur border border-white/10 p-2 rounded flex flex-col items-center w-20">
+                                            <FolderOpen className="text-slate-400 w-5 h-5 mb-2" />
+                                            <div className="w-12 h-1 bg-slate-600 rounded mt-2"></div>
+                                            <div className="w-8 h-1 bg-slate-600 rounded mt-1"></div>
+                                        </div>
+                                    </div>
+                                </div>
+
                                 <div className="grid grid-cols-3 gap-2 border-t border-white/10 pt-4">
                                     <div><div className="text-[10px] text-slate-500 font-mono">CATASTO</div><div className="text-sm font-bold text-white">100% OK</div></div>
                                     <div><div className="text-[10px] text-slate-500 font-mono">URBANISTICA</div><div className="text-sm font-bold text-white">VERIFICATO</div></div>
                                     <div><div className="text-[10px] text-slate-500 font-mono">APE</div><div className="text-sm font-bold text-white">CLASSE A1</div></div>
                                 </div>
                             </div>
+                            {/* SCANNING LINE ANIMATION */}
+                            <motion.div
+                                className="absolute inset-x-0 h-1 bg-[#FF5A36]/50 blur-[2px] z-20 shadow-[0_0_15px_rgba(255,90,54,0.6)]"
+                                animate={{ top: ["0%", "100%"] }}
+                                transition={{ duration: 3, repeat: Infinity, ease: "linear" }}
+                            />
+                            {/* GRADIENT SCAN ANIMATION */}
+                            <motion.div
+                                className="absolute inset-0 bg-gradient-to-b from-[#FF5A36]/5 to-transparent z-10 opacity-30 pointer-events-none"
+                                animate={{ top: ["0%", "100%"] }}
+                                transition={{ duration: 3, repeat: Infinity, ease: "linear" }}
+                            />
                         </div>
-                    </div>
+                    </motion.div>
                 </div>
             </section>
 
