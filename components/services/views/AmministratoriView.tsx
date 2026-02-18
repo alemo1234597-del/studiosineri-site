@@ -4,6 +4,8 @@ import { GlassPanel } from "@/components/ui/GlassPanel";
 import { PrimaryButton } from "@/components/ui/PrimaryButton";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { FeatureCard } from "@/components/ui/FeatureCard";
+// 👇 IMPORT THE SERVER ACTION
+import { submitAmministratori } from '@/app/actions/submit-amministratori'
 import {
     Ruler,
     Phone,
@@ -29,7 +31,9 @@ import {
     ClipboardCheck,
     CheckCircle,
     ArrowRight,
-    BellRing
+    BellRing,
+    Loader2, // Added Loader
+    AlertCircle // Added Alert
 } from "lucide-react";
 import Image from "next/image";
 import { useState } from "react";
@@ -38,6 +42,34 @@ import { cn } from "@/lib/utils";
 
 export default function AmministratoriView() {
     const [activeTab, setActiveTab] = useState('safety');
+
+    // 👇 FORM LOGIC ADDED HERE
+    const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle')
+    const [errorMessage, setErrorMessage] = useState('')
+
+    async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
+        event.preventDefault()
+        const form = event.currentTarget
+        setStatus('loading')
+        setErrorMessage('')
+
+        try {
+            const formData = new FormData(form)
+            const result = await submitAmministratori(formData)
+
+            if (result.success) {
+                setStatus('success')
+                form.reset()
+            } else {
+                setStatus('error')
+                setErrorMessage(result.message || 'Errore sconosciuto')
+            }
+        } catch (e) {
+            setStatus('error')
+            setErrorMessage('Errore di connessione')
+        }
+    }
+    // 👆 END OF FORM LOGIC
 
     const scenarios = [
         {
@@ -86,7 +118,7 @@ export default function AmministratoriView() {
                 'Tutela legale su ogni fase del cantiere'
             ],
             image: 'https://images.unsplash.com/photo-1541888946425-d81bb19240f5?q=80&w=2670&auto=format&fit=crop',
-            badgeIcon: ClipboardCheck, // Using ClipboardCheck as fact_check alternative
+            badgeIcon: ClipboardCheck,
             badgeLabel: 'Budget Control',
             badgeValue: 'Zero Extra',
             badgeColorClass: 'bg-orange-500/20 text-orange-400'
@@ -103,7 +135,7 @@ export default function AmministratoriView() {
                 <div className="absolute inset-0 z-0">
                     <img
                         alt="Modern Condominium at Twilight"
-                        className="w-full h-full object-cover opacity-40 ml-auto" // Slightly reduced opacity for better text contrast
+                        className="w-full h-full object-cover opacity-40 ml-auto"
                         src="https://lh3.googleusercontent.com/aida-public/AB6AXuCj1zn3KqRsQBRpRmP9sF_ks3RuC2_uFKKNhSYwQqkVbyiRu4dcFCgsWQ8MyGR8IPfLenpwWmPl_m7zpJRH1-EG-JTRWzw7rrgIZTyU2WYzGcCTYue7oYFhZnEQNbQWXV3AFl-yMX-IWb2hntGzq_yraDiLcRDzpPYaNvZK-qMDTeqmCtmWokxgFrWUmbpal-BwgYAfCPuUVSAQpYPTdqtT5g7QagQJ0_WzZXBmds43_LhYxObR-r2_MgKO_kLGvhdicOaeIF6bZQc"
                     />
                     <div className="absolute inset-0 bg-[#0B253A]/85 mix-blend-multiply"></div>
@@ -140,7 +172,7 @@ export default function AmministratoriView() {
                         </div>
                     </div>
 
-                    {/* 3D Card Representation (Simplified for React/Tailwind) */}
+                    {/* 3D Card Representation */}
                     <div className="relative h-[500px] w-full flex items-center justify-center perspective-[1000px] lg:h-auto z-10">
                         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[120%] h-[120%] bg-orange-500/10 blur-[80px] rounded-full pointer-events-none"></div>
 
@@ -163,7 +195,6 @@ export default function AmministratoriView() {
                                     <div className="border-t border-white w-full h-full"></div>
                                     <div className="border-t border-white w-full h-full"></div>
                                 </div>
-                                {/* Simple SVG Chart replacement */}
                                 <svg className="w-full h-full z-10 overflow-visible" preserveAspectRatio="none" viewBox="0 0 300 100">
                                     <path d="M0,80 C50,80 50,40 100,60 C150,80 150,20 200,40 C250,60 250,10 300,5" fill="none" stroke="#22c55e" strokeWidth="3" strokeLinecap="round" style={{ filter: "drop-shadow(0 0 8px rgba(34, 197, 94, 0.5))" }}></path>
                                     <path d="M0,80 C50,80 50,40 100,60 C150,80 150,20 200,40 C250,60 250,10 300,5 L300,100 L0,100 Z" fill="url(#gradient-green)" opacity="0.2" stroke="none"></path>
@@ -363,7 +394,7 @@ export default function AmministratoriView() {
                 </div>
             </section>
 
-            {/* Diagnosis Form Section */}
+            {/* Diagnosis Form Section - NOW POWERED BY SUPABASE 🚀 */}
             <section id="diagnosis" className="relative z-10 py-24 px-4 bg-gradient-to-b from-[#0f172a] to-[#020412]">
                 <div className="max-w-6xl mx-auto">
                     <GlassPanel className="rounded-3xl p-1 border-primary/30 relative overflow-hidden bg-[#1e293b]/20 backdrop-blur-2xl border-white/10">
@@ -402,10 +433,14 @@ export default function AmministratoriView() {
                                 </div>
                             </div>
                             <div id="contact" className="lg:w-1/2 bg-[#1e293b]/60 p-8 md:p-12 lg:rounded-r-[2rem] rounded-b-[2rem] lg:rounded-bl-none border-t lg:border-t-0 lg:border-l border-white/5 relative z-10">
-                                <form className="space-y-5">
+
+                                {/* 👇 THE REAL FORM STARTS HERE */}
+                                <form onSubmit={handleSubmit} className="space-y-5">
                                     <div>
                                         <label className="block text-sm font-bold text-slate-400 mb-2">Nome Studio Amministrazione</label>
                                         <input
+                                            name="studio-name"
+                                            required
                                             className="w-full bg-[#050a14] border border-white/10 rounded-xl px-4 py-3 text-white placeholder-slate-600 focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all"
                                             placeholder="Es. Studio Rossi srl" type="text"
                                         />
@@ -414,14 +449,21 @@ export default function AmministratoriView() {
                                         <div>
                                             <label className="block text-sm font-bold text-slate-400 mb-2">Email Ufficio</label>
                                             <input
+                                                name="email"
+                                                required
                                                 className="w-full bg-[#050a14] border border-white/10 rounded-xl px-4 py-3 text-white placeholder-slate-600 focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all"
                                                 placeholder="info@studiorossi.it" type="email"
                                             />
                                         </div>
                                         <div>
                                             <label className="block text-sm font-bold text-slate-400 mb-2">N° Condomini</label>
-                                            <select className="w-full bg-[#050a14] border border-white/10 rounded-xl px-4 py-3 text-white placeholder-slate-600 focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all cursor-pointer">
-                                                <option value="">Seleziona...</option>
+                                            <select
+                                                name="condo-count"
+                                                required
+                                                defaultValue=""
+                                                className="w-full bg-[#050a14] border border-white/10 rounded-xl px-4 py-3 text-white placeholder-slate-600 focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all cursor-pointer"
+                                            >
+                                                <option value="" disabled>Seleziona...</option>
                                                 <option value="1-10">1 - 10</option>
                                                 <option value="11-50">11 - 50</option>
                                                 <option value="50+">Oltre 50</option>
@@ -431,13 +473,34 @@ export default function AmministratoriView() {
                                     <div>
                                         <label className="block text-sm font-bold text-slate-400 mb-2">Problema Attuale (Opzionale)</label>
                                         <textarea
+                                            name="message"
                                             className="w-full bg-[#050a14] border border-white/10 rounded-xl px-4 py-3 text-white placeholder-slate-600 focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all resize-none"
                                             placeholder="Descrivi brevemente la situazione..." rows={3}
                                         ></textarea>
                                     </div>
-                                    <PrimaryButton className="w-full justify-center shadow-lg shadow-primary/25 hover:shadow-primary/40">
-                                        RICHIEDI SUPPORTO TECNICO
+
+                                    {/* STATUS ERROR */}
+                                    {status === 'error' && (
+                                        <div className="p-4 rounded-lg bg-red-900/20 border border-red-500/30 flex items-center gap-3">
+                                            <AlertCircle className="text-red-500 w-5 h-5" />
+                                            <span className="text-red-200 text-sm font-medium">{errorMessage}</span>
+                                        </div>
+                                    )}
+
+                                    <PrimaryButton
+                                        type="submit"
+                                        disabled={status === 'loading' || status === 'success'}
+                                        className="w-full justify-center shadow-lg shadow-primary/25 hover:shadow-primary/40 disabled:opacity-50 disabled:cursor-not-allowed"
+                                    >
+                                        {status === 'loading' ? (
+                                            <> <Loader2 className="w-5 h-5 animate-spin mr-2" /> ELABORAZIONE... </>
+                                        ) : status === 'success' ? (
+                                            <> <CheckCircle className="w-5 h-5 mr-2" /> RICHIESTA INVIATA </>
+                                        ) : (
+                                            "RICHIEDI SUPPORTO TECNICO"
+                                        )}
                                     </PrimaryButton>
+
                                     <p className="text-xs text-center text-slate-500 mt-4">
                                         I tuoi dati sono al sicuro. Risposta garantita entro 4 ore lavorative.
                                     </p>
