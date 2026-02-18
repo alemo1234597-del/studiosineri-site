@@ -2,12 +2,12 @@
 
 import { GlassPanel } from "@/components/ui/GlassPanel";
 import { PrimaryButton } from "@/components/ui/PrimaryButton";
-import { SectionHeading } from "@/components/ui/SectionHeading";
 import { FeatureCard } from "@/components/ui/FeatureCard";
+// 👇 IMPORT SERVER ACTION
+import { submitCommerciali } from '@/app/actions/submit-commerciali'
 import {
     ArrowRight,
     PlayCircle,
-    Building2,
     Store,
     UtensilsCrossed,
     Stethoscope,
@@ -19,27 +19,51 @@ import {
     Accessibility,
     Building,
     Sparkles,
-    ChevronDown,
     Lock,
-    Phone,
-    Mail,
-    MapPin,
     AlertTriangle,
     Check,
     Droplets,
     Fan,
     Landmark,
-    FileText,
-    Wrench,
-    Activity
+    ChevronDown,
+    Loader2, // Added
+    AlertCircle, // Added
+    CheckCircle // Added
 } from "lucide-react";
 import Image from "next/image";
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { cn } from "@/lib/utils";
 
 export default function CommercialiView() {
     const [activeSector, setActiveSector] = useState('food');
+
+    // 👇 FORM STATE
+    const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle')
+    const [errorMessage, setErrorMessage] = useState('')
+
+    async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
+        event.preventDefault()
+        const form = event.currentTarget
+        setStatus('loading')
+        setErrorMessage('')
+
+        try {
+            const formData = new FormData(form)
+            const result = await submitCommerciali(formData)
+
+            if (result.success) {
+                setStatus('success')
+                form.reset()
+            } else {
+                setStatus('error')
+                setErrorMessage(result.message || 'Errore sconosciuto')
+            }
+        } catch (e) {
+            setStatus('error')
+            setErrorMessage('Errore di connessione')
+        }
+    }
+    // 👆 END FORM STATE
 
     const sectorsData = {
         food: {
@@ -125,27 +149,6 @@ export default function CommercialiView() {
                                 <span>Come funziona</span>
                             </button>
                         </div>
-
-                        <div className="flex items-center gap-4 pt-4 border-t border-white/5 mt-4">
-                            <div className="flex -space-x-3">
-                                <div className="size-10 rounded-full border-2 border-[#020412] bg-gray-800 relative overflow-hidden">
-                                    <Image src="https://lh3.googleusercontent.com/aida-public/AB6AXuAv08b89ohkwl_gXEPwnomdxPE1RruluNGd6gzWdLra8p8xZ2r26yfx-LfIAfDQcI-JVn894tdMAoPr9bwa1H-Gv3UVLRwFBxMLO_1KZB4aBa0h1K5DWGHl4rgNy2O9h6ZMG01q6z7TPcBuqywT58rd_BAgO5tP2a9TSpTlZej7WMnmR_I2ANacBlmKK6f4wGCADsJzUzxPReqxCINrrtDC1LMdxVybiDfsRvOJrxZ0HsL4dSFoay_HzMef9Zh9EyzeU_aA4aK0Zvg" alt="Reviewer" fill className="object-cover" />
-                                </div>
-                                <div className="size-10 rounded-full border-2 border-[#020412] bg-gray-800 relative overflow-hidden">
-                                    <Image src="https://lh3.googleusercontent.com/aida-public/AB6AXuCbdtgOLwbySX31O2_hPqMJSxygMGaf3_cTDM_GI1dQUuF7Xqa0q5mG-I6pyj6piv-4_ZFim5JmPOx45_vDbTP5_SS3AJ8kt0V1LB0tlw9xmA0HUzf3uemrwxNjUEd0M2jA__qCOFqfOFaP_jIKp221YLJ0dtbXyJFLwm9YVSkJtc7Jn6DH0ptGgrgbrL-iMSx7CIKMtvR7jeSZ-ykvOESa6XU3ThMBYqKuDq0aNIR3dxTw9eLJUyc_I4OzJeB03OD5-zqB1h4VWhE" alt="Reviewer" fill className="object-cover" />
-                                </div>
-                                <div className="size-10 rounded-full border-2 border-[#020412] bg-gray-800 relative overflow-hidden">
-                                    <Image src="https://lh3.googleusercontent.com/aida-public/AB6AXuBx9du2yuczR6PK3vFFO9-mYOVex1ZFfcdZdBktDg_YSx0IiZBB4SoUx5RrvtOr1lnD3aKOGXe3Hjci-RWxR_FlT10ndRxj_n273hlp3B3ZWVAo3M2RJ1k5rcvVWcXPfSI3vEqt7H1Pow3zBCKZNE5798imqei9Gp-AQoVwbQTN0dMctDh8evXAKNWc4fIFvM3n32rt3i1_PmA8LprsWzuSaDcg1ZmbRzDJDqn9BIj7AP5bIWddx_ONlRLEqtzksedTCGQnzpPKiog" alt="Reviewer" fill className="object-cover" />
-                                </div>
-                                <div className="size-10 rounded-full border-2 border-[#020412] bg-gray-800 flex items-center justify-center text-xs font-bold text-white">
-                                    +150
-                                </div>
-                            </div>
-                            <div className="flex flex-col">
-                                <div className="flex text-primary text-sm gap-0.5">★★★★★</div>
-                                <span className="text-xs text-slate-400">Locali aperti a Torino</span>
-                            </div>
-                        </div>
                     </div>
 
                     {/* 3D Visual */}
@@ -166,7 +169,6 @@ export default function CommercialiView() {
                                         fill
                                         className="object-cover opacity-60 mix-blend-luminosity grayscale invert"
                                     />
-
                                     {/* Annotations */}
                                     <div className="absolute top-[20%] left-[15%]">
                                         <div className="relative group cursor-pointer">
@@ -204,9 +206,9 @@ export default function CommercialiView() {
                             <span className="w-8 h-px bg-primary"></span>
                             Il problema reale
                         </div>
-                        <h2 className="text-4xl md:text-5xl font-extrabold text-white mb-6 tracking-tight">L&apos;AFFITTO A VUOTO</h2>
+                        <h2 className="text-4xl md:text-5xl font-extrabold text-white mb-6 tracking-tight">L'AFFITTO A VUOTO</h2>
                         <p className="text-slate-400 text-lg leading-relaxed font-light">
-                            I rischi burocratici nascosti che fanno fallire il tuo business ancora prima dell&apos;apertura. Non firmare quel contratto d&apos;affitto prima di aver verificato questi punti critici.
+                            I rischi burocratici nascosti che fanno fallire il tuo business ancora prima dell'apertura. Non firmare quel contratto d'affitto prima di aver verificato questi punti critici.
                         </p>
                     </div>
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
@@ -339,7 +341,7 @@ export default function CommercialiView() {
                 </div>
             </section>
 
-            {/* Methodology Section Layout */}
+            {/* Methodology & Timeline */}
             <section className="py-24 px-6 relative overflow-hidden bg-gradient-to-b from-[#020412] to-[#0f172a]" id="method">
                 <div className="max-w-7xl mx-auto grid lg:grid-cols-2 gap-16 items-start relative z-10">
                     {/* Timeline */}
@@ -353,38 +355,21 @@ export default function CommercialiView() {
                         <div className="relative pl-16 space-y-16">
                             <div className="absolute left-6 top-4 bottom-10 w-1 bg-gradient-to-b from-primary via-primary/50 to-transparent shadow-[0_0_15px_rgba(255,90,54,0.5)] rounded-full"></div>
 
-                            {/* Step 1 */}
-                            <div className="relative group">
-                                <div className="absolute -left-[58px] top-0 size-14 rounded-full bg-[#020412] border-2 border-primary text-primary flex items-center justify-center font-bold text-xl shadow-[0_0_20px_rgba(255,90,54,0.4)] group-hover:bg-primary group-hover:text-white transition-all duration-300 z-10 transform group-hover:scale-110">1</div>
-                                <div className="bg-white/5 border border-white/5 rounded-2xl p-6 hover:bg-white/10 transition-all duration-300 group-hover:border-primary/30">
-                                    <h4 className="text-xl font-bold text-white mb-2 group-hover:text-glow-white transition-all duration-300">Screening Immobiliare</h4>
-                                    <p className="text-slate-400 text-sm leading-relaxed">Analisi tecnica preventiva dei locali e verifica catastale immediata prima della firma del contratto.</p>
+                            {/* Steps... */}
+                            {[
+                                { title: 'Screening Immobiliare', desc: 'Analisi tecnica preventiva dei locali e verifica catastale immediata prima della firma del contratto.' },
+                                { title: 'Pre-Audit Sanitario', desc: 'Verifica completa dei vincoli ASL e requisiti igienico-sanitari specifici per la tua attività.' },
+                                { title: 'Fast-Track SCIA', desc: 'Preparazione e invio telematico immediato delle pratiche edilizie comunali e sanitarie.' },
+                                { title: 'Business Handover', desc: 'Consegna del locale a norma, pronto per l\'apertura in sicurezza senza sorprese burocratiche.' }
+                            ].map((step, i) => (
+                                <div key={i} className="relative group">
+                                    <div className="absolute -left-[58px] top-0 size-14 rounded-full bg-[#020412] border-2 border-primary text-primary flex items-center justify-center font-bold text-xl shadow-[0_0_20px_rgba(255,90,54,0.4)] group-hover:bg-primary group-hover:text-white transition-all duration-300 z-10 transform group-hover:scale-110">{i + 1}</div>
+                                    <div className="bg-white/5 border border-white/5 rounded-2xl p-6 hover:bg-white/10 transition-all duration-300 group-hover:border-primary/30">
+                                        <h4 className="text-xl font-bold text-white mb-2 group-hover:text-glow-white transition-all duration-300">{step.title}</h4>
+                                        <p className="text-slate-400 text-sm leading-relaxed">{step.desc}</p>
+                                    </div>
                                 </div>
-                            </div>
-                            {/* Step 2 */}
-                            <div className="relative group">
-                                <div className="absolute -left-[58px] top-0 size-14 rounded-full bg-[#020412] border-2 border-primary text-primary flex items-center justify-center font-bold text-xl shadow-[0_0_20px_rgba(255,90,54,0.4)] group-hover:bg-primary group-hover:text-white transition-all duration-300 z-10 transform group-hover:scale-110">2</div>
-                                <div className="bg-white/5 border border-white/5 rounded-2xl p-6 hover:bg-white/10 transition-all duration-300 group-hover:border-primary/30">
-                                    <h4 className="text-xl font-bold text-white mb-2 group-hover:text-glow-white transition-all duration-300">Pre-Audit Sanitario</h4>
-                                    <p className="text-slate-400 text-sm leading-relaxed">Verifica completa dei vincoli ASL e requisiti igienico-sanitari specifici per la tua attività.</p>
-                                </div>
-                            </div>
-                            {/* Step 3 */}
-                            <div className="relative group">
-                                <div className="absolute -left-[58px] top-0 size-14 rounded-full bg-[#020412] border-2 border-primary text-primary flex items-center justify-center font-bold text-xl shadow-[0_0_20px_rgba(255,90,54,0.4)] group-hover:bg-primary group-hover:text-white transition-all duration-300 z-10 transform group-hover:scale-110">3</div>
-                                <div className="bg-white/5 border border-white/5 rounded-2xl p-6 hover:bg-white/10 transition-all duration-300 group-hover:border-primary/30">
-                                    <h4 className="text-xl font-bold text-white mb-2 group-hover:text-glow-white transition-all duration-300">Fast-Track SCIA</h4>
-                                    <p className="text-slate-400 text-sm leading-relaxed">Preparazione e invio telematico immediato delle pratiche edilizie comunali e sanitarie.</p>
-                                </div>
-                            </div>
-                            {/* Step 4 */}
-                            <div className="relative group">
-                                <div className="absolute -left-[58px] top-0 size-14 rounded-full bg-primary text-white flex items-center justify-center font-bold text-xl shadow-[0_0_25px_rgba(255,90,54,0.8)] animate-pulse z-10 transform group-hover:scale-110">4</div>
-                                <div className="bg-white/10 border border-primary/30 rounded-2xl p-6 shadow-glow-primary group-hover:bg-primary/20 transition-all duration-300">
-                                    <h4 className="text-xl font-bold text-white mb-2 group-hover:text-glow-white transition-all duration-300">Business Handover</h4>
-                                    <p className="text-slate-300 text-sm leading-relaxed">Consegna del locale a norma, pronto per l&apos;apertura in sicurezza senza sorprese burocratiche.</p>
-                                </div>
-                            </div>
+                            ))}
                         </div>
                     </div>
 
@@ -434,7 +419,7 @@ export default function CommercialiView() {
                 </div>
             </section>
 
-            {/* Form Section */}
+            {/* Form Section - POWERED BY SUPABASE 🚀 */}
             <section id="contact" className="py-24 px-6 border-t border-white/5 relative overflow-hidden bg-gradient-to-b from-[#0f172a] to-[#020412]">
                 <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-primary/20 blur-[100px] rounded-full pointer-events-none -z-10"></div>
                 <div className="max-w-4xl mx-auto relative z-10">
@@ -444,11 +429,15 @@ export default function CommercialiView() {
                                 <h2 className="text-4xl md:text-5xl font-extrabold text-white mb-4 tracking-tight">Mettici alla prova.</h2>
                                 <p className="text-slate-400 text-lg font-light">Evita gli errori che costano cari. Richiedi un sopralluogo tecnico prima di firmare.</p>
                             </div>
-                            <form className="space-y-6">
+
+                            {/* 👇 REAL FORM START */}
+                            <form onSubmit={handleSubmit} className="space-y-6">
                                 <div className="grid md:grid-cols-2 gap-6">
                                     <div className="space-y-2">
                                         <label className="text-xs font-bold uppercase text-slate-400 tracking-wider ml-1">Nome e Cognome</label>
                                         <input
+                                            name="full-name"
+                                            required
                                             className="w-full bg-[#020412]/50 border border-white/10 text-white rounded-xl p-5 focus:ring-2 focus:ring-primary focus:border-transparent placeholder-gray-600 transition-all shadow-inner hover:bg-[#020412]/70 focus:outline-none"
                                             placeholder="Mario Rossi" type="text"
                                         />
@@ -456,6 +445,7 @@ export default function CommercialiView() {
                                     <div className="space-y-2">
                                         <label className="text-xs font-bold uppercase text-slate-400 tracking-wider ml-1">Nome Attività</label>
                                         <input
+                                            name="business-name"
                                             className="w-full bg-[#020412]/50 border border-white/10 text-white rounded-xl p-5 focus:ring-2 focus:ring-primary focus:border-transparent placeholder-gray-600 transition-all shadow-inner hover:bg-[#020412]/70 focus:outline-none"
                                             placeholder="Bar Sport srl" type="text"
                                         />
@@ -465,6 +455,8 @@ export default function CommercialiView() {
                                     <div className="space-y-2">
                                         <label className="text-xs font-bold uppercase text-slate-400 tracking-wider ml-1">Telefono</label>
                                         <input
+                                            name="phone"
+                                            required
                                             className="w-full bg-[#020412]/50 border border-white/10 text-white rounded-xl p-5 focus:ring-2 focus:ring-primary focus:border-transparent placeholder-gray-600 transition-all shadow-inner hover:bg-[#020412]/70 focus:outline-none"
                                             placeholder="+39 333 ..." type="tel"
                                         />
@@ -472,6 +464,8 @@ export default function CommercialiView() {
                                     <div className="space-y-2">
                                         <label className="text-xs font-bold uppercase text-slate-400 tracking-wider ml-1">Email</label>
                                         <input
+                                            name="email"
+                                            required
                                             className="w-full bg-[#020412]/50 border border-white/10 text-white rounded-xl p-5 focus:ring-2 focus:ring-primary focus:border-transparent placeholder-gray-600 transition-all shadow-inner hover:bg-[#020412]/70 focus:outline-none"
                                             placeholder="mario@email.com" type="email"
                                         />
@@ -480,23 +474,57 @@ export default function CommercialiView() {
                                 <div className="space-y-2">
                                     <label className="text-xs font-bold uppercase text-slate-400 tracking-wider ml-1">Tipo di locale</label>
                                     <div className="relative">
-                                        <select className="w-full bg-[#020412]/50 border border-white/10 text-white rounded-xl p-5 focus:ring-2 focus:ring-primary focus:border-transparent [&>option]:bg-[#020412] [&>option]:text-white shadow-inner hover:bg-[#020412]/70 appearance-none cursor-pointer focus:outline-none">
-                                            <option>Commerciale (&lt; 100mq)</option>
-                                            <option>Commerciale (&gt; 100mq)</option>
-                                            <option>Ristorazione / Bar</option>
-                                            <option>Industriale / Capannone</option>
-                                            <option>Ufficio / Studio Medico</option>
+                                        <select
+                                            name="locale-type"
+                                            required
+                                            defaultValue=""
+                                            className="w-full bg-[#020412]/50 border border-white/10 text-white rounded-xl p-5 focus:ring-2 focus:ring-primary focus:border-transparent [&>option]:bg-[#020412] [&>option]:text-white shadow-inner hover:bg-[#020412]/70 appearance-none cursor-pointer focus:outline-none"
+                                        >
+                                            <option value="" disabled>Seleziona tipologia...</option>
+                                            <option value="Commerciale (< 100mq)">Commerciale (&lt; 100mq)</option>
+                                            <option value="Commerciale (> 100mq)">Commerciale (&gt; 100mq)</option>
+                                            <option value="Ristorazione / Bar">Ristorazione / Bar</option>
+                                            <option value="Industriale / Capannone">Industriale / Capannone</option>
+                                            <option value="Ufficio / Studio Medico">Ufficio / Studio Medico</option>
                                         </select>
                                         <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-5 text-white">
                                             <ChevronDown className="w-5 h-5" />
                                         </div>
                                     </div>
                                 </div>
-                                <button className="w-full bg-primary hover:bg-[#ff7a5c] text-white font-bold text-lg py-6 rounded-xl shadow-[0_0_20px_rgba(255,90,54,0.3)] hover:shadow-[0_0_50px_rgba(255,90,54,0.6)] transition-all transform hover:-translate-y-1 mt-8 flex items-center justify-center gap-3 group relative overflow-hidden tracking-widest uppercase">
-                                    <div className="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-500"></div>
-                                    <span className="relative z-10">RICHIEDI SOPRALLUOGO PRE-AFFITTO</span>
-                                    <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform relative z-10" />
+
+                                {/* ERROR MESSAGE */}
+                                {status === 'error' && (
+                                    <div className="flex items-center gap-3 bg-red-900/20 border border-red-500/30 p-4 rounded-xl">
+                                        <AlertCircle className="w-5 h-5 text-red-500 shrink-0" />
+                                        <p className="text-red-200 text-sm font-medium">{errorMessage}</p>
+                                    </div>
+                                )}
+
+                                {/* SUBMIT BUTTON */}
+                                <button
+                                    type="submit"
+                                    disabled={status === 'loading' || status === 'success'}
+                                    className={`w-full font-bold text-lg py-6 rounded-xl transition-all transform hover:-translate-y-1 mt-8 flex items-center justify-center gap-3 group relative overflow-hidden tracking-widest uppercase
+                                        ${status === 'success'
+                                            ? '!bg-green-600 cursor-default shadow-none hover:translate-y-0'
+                                            : 'bg-primary hover:bg-[#ff7a5c] text-white shadow-[0_0_20px_rgba(255,90,54,0.3)] hover:shadow-[0_0_50px_rgba(255,90,54,0.6)]'
+                                        }
+                                    `}
+                                >
+                                    {status === 'loading' ? (
+                                        <> <Loader2 className="w-6 h-6 animate-spin" /> INVIO IN CORSO... </>
+                                    ) : status === 'success' ? (
+                                        <> <CheckCircle className="w-6 h-6" /> RICHIESTA INVIATA CON SUCCESSO </>
+                                    ) : (
+                                        <>
+                                            <div className="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-500"></div>
+                                            <span className="relative z-10">RICHIEDI SOPRALLUOGO PRE-AFFITTO</span>
+                                            <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform relative z-10" />
+                                        </>
+                                    )}
                                 </button>
+
                                 <p className="text-center text-xs text-slate-500 mt-6 flex items-center justify-center gap-2">
                                     <Lock className="w-4 h-4 text-primary" />
                                     I tuoi dati sono al sicuro. Rispondiamo entro 4 ore lavorative.
