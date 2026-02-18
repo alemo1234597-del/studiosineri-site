@@ -4,7 +4,6 @@ import { GlassPanel } from "@/components/ui/GlassPanel";
 import { PrimaryButton } from "@/components/ui/PrimaryButton";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { FeatureCard } from "@/components/ui/FeatureCard";
-// 👇 IMPORT THE SERVER ACTION
 import { submitAmministratori } from '@/app/actions/submit-amministratori'
 import {
     Ruler,
@@ -32,8 +31,8 @@ import {
     CheckCircle,
     ArrowRight,
     BellRing,
-    Loader2, // Added Loader
-    AlertCircle // Added Alert
+    Loader2,
+    AlertCircle
 } from "lucide-react";
 import Image from "next/image";
 import { useState } from "react";
@@ -42,8 +41,6 @@ import { cn } from "@/lib/utils";
 
 export default function AmministratoriView() {
     const [activeTab, setActiveTab] = useState('safety');
-
-    // 👇 FORM LOGIC ADDED HERE
     const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle')
     const [errorMessage, setErrorMessage] = useState('')
 
@@ -69,7 +66,6 @@ export default function AmministratoriView() {
             setErrorMessage('Errore di connessione')
         }
     }
-    // 👆 END OF FORM LOGIC
 
     const scenarios = [
         {
@@ -394,7 +390,7 @@ export default function AmministratoriView() {
                 </div>
             </section>
 
-            {/* Diagnosis Form Section - NOW POWERED BY SUPABASE 🚀 */}
+            {/* Diagnosis Form Section */}
             <section id="diagnosis" className="relative z-10 py-24 px-4 bg-gradient-to-b from-[#0f172a] to-[#020412]">
                 <div className="max-w-6xl mx-auto">
                     <GlassPanel className="rounded-3xl p-1 border-primary/30 relative overflow-hidden bg-[#1e293b]/20 backdrop-blur-2xl border-white/10">
@@ -434,7 +430,6 @@ export default function AmministratoriView() {
                             </div>
                             <div id="contact" className="lg:w-1/2 bg-[#1e293b]/60 p-8 md:p-12 lg:rounded-r-[2rem] rounded-b-[2rem] lg:rounded-bl-none border-t lg:border-t-0 lg:border-l border-white/5 relative z-10">
 
-                                {/* 👇 THE REAL FORM STARTS HERE */}
                                 <form onSubmit={handleSubmit} className="space-y-5">
                                     <div>
                                         <label className="block text-sm font-bold text-slate-400 mb-2">Nome Studio Amministrazione</label>
@@ -487,10 +482,12 @@ export default function AmministratoriView() {
                                         </div>
                                     )}
 
+                                    {/* 👇 THIS IS THE BUTTON WITH THE FIX 👇 */}
                                     <PrimaryButton
                                         type="submit"
                                         disabled={status === 'loading' || status === 'success'}
-                                        className="w-full justify-center shadow-lg shadow-primary/25 hover:shadow-primary/40 disabled:opacity-50 disabled:cursor-not-allowed"
+                                        className={`w-full justify-center shadow-lg shadow-primary/25 hover:shadow-primary/40 disabled:opacity-100 disabled:cursor-not-allowed ${status === 'success' ? '!bg-green-600 !hover:bg-green-600 !shadow-none' : ''
+                                            }`}
                                     >
                                         {status === 'loading' ? (
                                             <> <Loader2 className="w-5 h-5 animate-spin mr-2" /> ELABORAZIONE... </>
