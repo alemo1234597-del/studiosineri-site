@@ -14,8 +14,8 @@ export async function submitCommerciali(formData: FormData) {
         nome_attivita: formData.get('business-name'),
         email: formData.get('email'),
         telefono: formData.get('phone'),
-        tipo_locale: formData.get('locale-type'), // Negozio, Ufficio, Capannone
-        messaggio: formData.get('message'),
+        tipo_locale: formData.get('locale-type'),
+        // ❌ REMOVED 'messaggio' because it doesn't exist in the DB or Form
     }
 
     try {
