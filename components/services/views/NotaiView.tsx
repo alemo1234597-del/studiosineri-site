@@ -1,11 +1,12 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { submitNotai } from '@/app/actions/submit-notai'
 import {
-    Landmark, Lock, ArrowRight, PlayCircle, FileText, ShieldCheck,
+    DraftingCompass, // Standard Apex Logo Icon
+    ArrowRight, PlayCircle, FileText, ShieldCheck,
     FolderOpen, FolderX, AlertTriangle, History, Zap, UserX, X,
-    Check, Rocket, Loader2, CheckCircle, AlertCircle, RefreshCw
+    Check, Rocket, Loader2, CheckCircle, AlertCircle, RefreshCw, Menu
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 
@@ -14,11 +15,23 @@ export default function NotaiView() {
     const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle')
     const [errorMessage, setErrorMessage] = useState('')
 
+    // 👇 NAVBAR SCROLL STATE (To match Homepage)
+    const [scrolled, setScrolled] = useState(false);
+    const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+
     // 👇 PROTOCOL SECTION STATE
     const [activeStep, setActiveStep] = useState(0);
 
-    // 👇 SCROLL FUNCTION (Fixes the Navbar Links)
+    // 👇 SCROLL LISTENER
+    useEffect(() => {
+        const handleScroll = () => setScrolled(window.scrollY > 20);
+        window.addEventListener('scroll', handleScroll);
+        return () => window.removeEventListener('scroll', handleScroll);
+    }, []);
+
+    // 👇 SCROLL FUNCTION
     const scrollToSection = (id: string) => {
+        setIsMobileMenuOpen(false); // Close mobile menu if open
         const element = document.getElementById(id);
         if (element) {
             element.scrollIntoView({ behavior: 'smooth' });
@@ -86,26 +99,48 @@ export default function NotaiView() {
     return (
         <div className="min-h-screen bg-[#020412] text-slate-400 font-display selection:bg-[#FF5A36] selection:text-white overflow-x-hidden">
 
-            {/* HEADER / NAVBAR */}
-            <header className="fixed top-0 left-0 right-0 z-50 bg-[#1e293b]/40 backdrop-blur-xl border-b border-white/5">
-                <div className="max-w-[1280px] mx-auto px-6 h-16 flex items-center justify-between">
-                    <div className="flex items-center gap-3">
-                        <div className="size-8 rounded-lg bg-[#FF5A36]/20 flex items-center justify-center text-[#FF5A36] shadow-[0_0_15px_rgba(255,90,54,0.3)]">
-                            <Landmark className="w-5 h-5" />
-                        </div>
-                        <h2 className="text-white text-lg font-bold tracking-tight">STUDIO APEX</h2>
+            {/* HEADER / NAVBAR - EXACT COPY OF HOMEPAGE */}
+            <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${scrolled ? 'py-4 bg-[#020617]/80 backdrop-blur-md border-b border-white/5' : 'py-6 bg-transparent'}`}>
+                <div className="container mx-auto px-6 flex items-center justify-between">
+                    {/* LOGO */}
+                    <div className="flex items-center gap-2 text-white hover:opacity-80 transition-opacity cursor-pointer">
+                        <DraftingCompass className="w-6 h-6 text-[#FF5A36]" />
+                        <span className="font-bold tracking-tight text-lg">APEX</span>
                     </div>
-                    {/* 👇 NAVIGATION LINKS NOW WORK */}
+
+                    {/* DESKTOP LINKS */}
                     <div className="hidden md:flex items-center gap-8">
-                        <button onClick={() => scrollToSection('protocol')} className="text-sm text-slate-400 hover:text-white transition-colors font-medium">Protocollo</button>
-                        <button onClick={() => scrollToSection('problems')} className="text-sm text-slate-400 hover:text-white transition-colors font-medium">Problemi</button>
-                        <button onClick={() => scrollToSection('comparison')} className="text-sm text-slate-400 hover:text-white transition-colors font-medium">Chi Siamo</button>
+                        <button onClick={() => scrollToSection('problems')} className="text-sm font-medium text-gray-300 hover:text-white transition-colors uppercase tracking-wider">PROBLEMI</button>
+                        <button onClick={() => scrollToSection('protocol')} className="text-sm font-medium text-gray-300 hover:text-white transition-colors uppercase tracking-wider">PROTOCOLLO</button>
+                        <button onClick={() => scrollToSection('contact-form')} className="text-sm font-medium text-gray-300 hover:text-white transition-colors uppercase tracking-wider">DATA ROOM</button>
                     </div>
-                    <button onClick={() => scrollToSection('contact-form')} className="bg-[#FF5A36]/10 hover:bg-[#FF5A36]/20 border border-[#FF5A36]/30 text-[#FF5A36] text-xs font-bold font-mono px-4 py-2 rounded-lg transition-all flex items-center gap-2 hover:shadow-[0_0_15px_rgba(255,90,54,0.2)]">
-                        <Lock className="w-4 h-4" /> AREA RISERVATA
+
+                    {/* CTA BUTTON */}
+                    <div className="hidden md:block">
+                        <button
+                            onClick={() => scrollToSection('contact-form')}
+                            className="px-6 py-2.5 bg-[#FF5A36] hover:bg-[#ff7a5c] text-white text-sm font-bold rounded-full transition-all flex items-center gap-2 shadow-[0_0_20px_rgba(224,93,58,0.3)] hover:shadow-[0_0_30px_rgba(224,93,58,0.5)]"
+                        >
+                            Richiedi Audit
+                            <ArrowRight className="w-4 h-4" />
+                        </button>
+                    </div>
+
+                    {/* MOBILE MENU TOGGLE */}
+                    <button onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)} className="md:hidden text-white">
+                        {isMobileMenuOpen ? <X /> : <Menu />}
                     </button>
                 </div>
-            </header>
+
+                {/* MOBILE MENU */}
+                {isMobileMenuOpen && (
+                    <div className="absolute top-full left-0 right-0 bg-[#020617] border-b border-white/10 p-6 md:hidden flex flex-col gap-4 shadow-2xl">
+                        <button onClick={() => scrollToSection('problems')} className="text-left text-gray-300 hover:text-white py-2 block border-b border-white/5">PROBLEMI</button>
+                        <button onClick={() => scrollToSection('protocol')} className="text-left text-gray-300 hover:text-white py-2 block border-b border-white/5">PROTOCOLLO</button>
+                        <button onClick={() => scrollToSection('contact-form')} className="w-full py-3 bg-[#FF5A36] text-center text-white font-bold rounded mt-4">Richiedi Audit</button>
+                    </div>
+                )}
+            </nav>
 
             {/* HERO SECTION */}
             <section className="relative pt-32 pb-20 px-6 lg:px-20 overflow-hidden bg-[radial-gradient(circle_at_50%_0%,rgba(255,90,54,0.15)_0%,rgba(2,4,18,0)_60%)]">
@@ -125,13 +160,13 @@ export default function NotaiView() {
                             Il partner tecnico definitivo per notai che non accettano compromessi. Precisione ingegneristica per rogiti blindati e conformità garantita.
                         </p>
                         <div className="flex flex-wrap gap-4 mt-2">
-                            <button onClick={() => scrollToSection('contact-form')} className="group relative overflow-hidden rounded-xl bg-[#FF5A36] px-8 py-4 font-bold text-white shadow-[0_0_20px_rgba(255,90,54,0.4)] hover:shadow-[0_0_30px_rgba(255,90,54,0.6)] transition-all">
+                            <button onClick={() => document.getElementById('contact-form')?.scrollIntoView({ behavior: 'smooth' })} className="group relative overflow-hidden rounded-xl bg-[#FF5A36] px-8 py-4 font-bold text-white shadow-[0_0_20px_rgba(255,90,54,0.4)] hover:shadow-[0_0_30px_rgba(255,90,54,0.6)] transition-all">
                                 <span className="relative z-10 flex items-center gap-2">
                                     RICHIEDI AUDIT
                                     <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
                                 </span>
                             </button>
-                            <button onClick={() => scrollToSection('protocol')} className="group flex items-center gap-2 rounded-xl border border-white/10 bg-white/5 px-8 py-4 font-bold text-white hover:bg-white/10 transition-all backdrop-blur-sm">
+                            <button className="group flex items-center gap-2 rounded-xl border border-white/10 bg-white/5 px-8 py-4 font-bold text-white hover:bg-white/10 transition-all backdrop-blur-sm">
                                 <PlayCircle className="w-5 h-5" />
                                 COME FUNZIONA
                             </button>
@@ -193,11 +228,13 @@ export default function NotaiView() {
                                     <div><div className="text-[10px] text-slate-500 font-mono">APE</div><div className="text-sm font-bold text-white">CLASSE A1</div></div>
                                 </div>
                             </div>
+                            {/* SCANNING LINE ANIMATION */}
                             <motion.div
                                 className="absolute inset-x-0 h-1 bg-[#FF5A36]/50 blur-[2px] z-20 shadow-[0_0_15px_rgba(255,90,54,0.6)]"
                                 animate={{ top: ["0%", "100%"] }}
                                 transition={{ duration: 3, repeat: Infinity, ease: "linear" }}
                             />
+                            {/* GRADIENT SCAN ANIMATION */}
                             <motion.div
                                 className="absolute inset-0 bg-gradient-to-b from-[#FF5A36]/5 to-transparent z-10 opacity-30 pointer-events-none"
                                 animate={{ top: ["0%", "100%"] }}
@@ -208,7 +245,7 @@ export default function NotaiView() {
                 </div>
             </section>
 
-            {/* PROBLEM SECTION (ID="problems") */}
+            {/* PROBLEM SECTION */}
             <section id="problems" className="py-20 px-6 lg:px-20 bg-gradient-to-b from-[#020412] to-[#0f172a]">
                 <div className="max-w-[1280px] mx-auto">
                     <div className="mb-12">
@@ -223,7 +260,7 @@ export default function NotaiView() {
                 </div>
             </section>
 
-            {/* PROTOCOL SECTION (ID="protocol") */}
+            {/* PROTOCOL SECTION */}
             <section id="protocol" className="py-24 px-6 lg:px-20 bg-[#0f172a]">
                 <div className="max-w-[1280px] mx-auto">
                     <div className="text-center mb-16">
@@ -282,7 +319,7 @@ export default function NotaiView() {
                 </div>
             </section>
 
-            {/* COMPARISON SECTION (ID="comparison") */}
+            {/* COMPARISON SECTION */}
             <section id="comparison" className="py-20 px-6 lg:px-20 bg-gradient-to-b from-[#0f172a] to-[#020412]">
                 <div className="max-w-[960px] mx-auto">
                     <div className="bg-[#1e293b]/40 backdrop-blur-xl rounded-3xl overflow-hidden border border-white/10">
@@ -309,7 +346,7 @@ export default function NotaiView() {
                 </div>
             </section>
 
-            {/* FORM SECTION (ID="contact-form") */}
+            {/* FORM SECTION - WIRED UP 🚀 */}
             <section id="contact-form" className="py-32 px-6 lg:px-20 relative overflow-hidden bg-gradient-to-t from-[#020412] to-[#0f172a]">
                 <div className="max-w-[800px] mx-auto relative z-10">
                     <div className="bg-[#1e293b]/40 backdrop-blur-xl rounded-3xl p-10 lg:p-16 text-center border-t border-[#FF5A36]/20 shadow-[0_0_50px_rgba(0,0,0,0.5)]">
