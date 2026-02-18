@@ -1,5 +1,6 @@
 "use client";
 
+import PrivatiForm from '@/components/forms/PrivatiForm'
 import { GlassPanel } from "@/components/ui/GlassPanel";
 import { PrimaryButton } from "@/components/ui/PrimaryButton";
 import { SectionHeading } from "@/components/ui/SectionHeading";
@@ -407,8 +408,8 @@ export default function PrivatiView() {
                     </div>
                 </div>
             </section>
-            <div id="contact" className="py-20 text-center">
-                <PrimaryButton>Contattaci per una Consulenza</PrimaryButton>
+            <div id="contact" className="py-20">
+                <PrivatiForm />
             </div>
         </div>
     );
