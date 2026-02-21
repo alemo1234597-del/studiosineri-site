@@ -22,7 +22,8 @@ import {
     CheckCircle,
     Terminal,
     FolderOpen,
-    PlayCircle
+    PlayCircle,
+    MapPin
 } from "lucide-react";
 import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
@@ -74,15 +75,42 @@ export default function PrivatiView() {
                         <span className="text-xs font-medium text-gray-300 tracking-wide uppercase">Turin Real Estate Intelligence</span>
                     </div>
 
-                    <h1 className="text-4xl md:text-6xl lg:text-7xl font-black tracking-tight leading-[1.1] mb-6 max-w-5xl text-white uppercase text-center">
-                        La compravendita immobiliare a Torino è <span className="text-transparent bg-clip-text bg-gradient-to-r from-white to-slate-400">un campo minato.</span>
+                    {/* 👇 ANIMATED "BLUR-IN" TITLE (Fixed without needing MagicUI imports) */}
+                    <h1 className="text-4xl md:text-6xl lg:text-7xl font-black tracking-tight leading-[1.1] mb-6 max-w-5xl text-white uppercase text-center flex flex-col md:block">
+                        <motion.span
+                            initial={{ opacity: 0, filter: "blur(12px)", y: 10 }}
+                            animate={{ opacity: 1, filter: "blur(0px)", y: 0 }}
+                            transition={{ duration: 0.8, ease: "easeOut" }}
+                            className="inline-block"
+                        >
+                            La compravendita immobiliare a Torino è
+                        </motion.span>
+                        {" "}
+                        <motion.span
+                            initial={{ opacity: 0, filter: "blur(12px)", y: 10 }}
+                            animate={{ opacity: 1, filter: "blur(0px)", y: 0 }}
+                            transition={{ duration: 0.8, ease: "easeOut", delay: 0.3 }}
+                            className="inline-block text-transparent bg-clip-text bg-gradient-to-r from-white to-slate-400"
+                        >
+                            un campo minato.
+                        </motion.span>
                     </h1>
 
-                    <p className="text-lg md:text-xl text-gray-400 max-w-3xl mb-10 leading-relaxed font-medium">
+                    <motion.p
+                        initial={{ opacity: 0, y: 10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.8, delay: 0.6 }}
+                        className="text-lg md:text-xl text-gray-400 max-w-3xl mb-10 leading-relaxed font-medium"
+                    >
                         IL NOTAIO NON VEDE GLI ABUSI. L'AGENZIA NON LI DICE. <span className="text-[#ec4213] font-bold">TU LI PAGHI.</span>
-                    </p>
+                    </motion.p>
 
-                    <div className="flex flex-col sm:flex-row gap-4 mb-20 justify-center">
+                    <motion.div
+                        initial={{ opacity: 0, y: 10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.8, delay: 0.8 }}
+                        className="flex flex-col sm:flex-row gap-4 mb-20 justify-center"
+                    >
                         <button onClick={() => document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })} className="h-14 px-8 rounded-full bg-[#ec4213] hover:bg-[#ff5a36] text-white font-bold text-lg shadow-[0_0_20px_-5px_rgba(236,66,19,0.5)] hover:shadow-[0_0_30px_-5px_rgba(236,66,19,0.6)] transition-all transform hover:-translate-y-1">
                             Proteggi il tuo Investimento
                         </button>
@@ -90,7 +118,7 @@ export default function PrivatiView() {
                             <PlayCircle className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
                             Guarda la Demo
                         </button>
-                    </div>
+                    </motion.div>
 
                     {/* Floating UI Card */}
                     <div className="relative w-full max-w-3xl animate-[float_6s_ease-in-out_infinite]">
@@ -248,7 +276,7 @@ export default function PrivatiView() {
                                 </div>
                             </div>
 
-                            {/* NEW SELLER SECTIONS (Archivio Riservato & Metodo Apex) */}
+                            {/* SELLER SECTIONS (Archivio Riservato & Metodo Apex) */}
                             <div className="py-12 border-t border-b border-white/5 bg-[#0B0C15] -mx-6 px-6 lg:-mx-20 lg:px-20">
                                 <div className="flex flex-col items-center mb-16 text-center">
                                     <div className="flex items-center gap-2 mb-2 text-[#ec4213] font-mono text-xs tracking-[0.2em] uppercase">
@@ -482,12 +510,97 @@ export default function PrivatiView() {
                                     </button>
                                 </GlassPanel>
                             </div>
+
+                            {/* CASE STUDIES (Buyer View) */}
+                            <div className="py-20 flex flex-col items-center">
+                                <div className="text-center mb-12">
+                                    <h2 className="text-3xl md:text-5xl font-black text-white leading-tight uppercase mb-4">
+                                        NON È PARANOIA. <span className="text-[#ec4213]">È GIÀ SUCCESSO.</span><br />
+                                        ECCO COME ABBIAMO PROTETTO I<br />NOSTRI CLIENTI A TORINO.
+                                    </h2>
+                                    <p className="text-gray-400">Tre casi reali in cui il nostro "Sopralluogo Killer" ha evitato un disastro finanziario.</p>
+                                </div>
+
+                                <div className="w-full flex flex-col gap-6 max-w-4xl mx-auto">
+
+                                    {/* Case 1 */}
+                                    <div className="bg-[#13141c] border border-white/5 rounded-3xl p-8 flex flex-col md:flex-row gap-8 items-start md:items-center hover:border-white/10 transition-colors">
+                                        <div className="md:w-1/3">
+                                            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-red-500/10 text-red-400 text-xs font-bold border border-red-500/20 mb-3">
+                                                <MapPin className="w-3 h-3" /> Vanchiglia
+                                            </div>
+                                            <h3 className="text-2xl font-bold text-white mb-1">La Trappola Storica</h3>
+                                            <p className="text-gray-500 text-xs font-mono italic">Dossier #001</p>
+                                        </div>
+                                        <div className="md:w-1/3 border-l-0 md:border-l border-t md:border-t-0 border-white/10 pt-4 md:pt-0 md:pl-8">
+                                            <p className="text-[#ec4213] text-[10px] font-bold tracking-widest uppercase mb-2">Problema</p>
+                                            <p className="text-gray-300 text-sm">L'agenzia vendeva un trilocale <em>"ristrutturato e pronto all'uso"</em>.</p>
+                                        </div>
+                                        <div className="md:w-1/3 border-l-0 md:border-l border-t md:border-t-0 border-white/10 pt-4 md:pt-0 md:pl-8">
+                                            <p className="text-gray-500 text-[10px] font-bold tracking-widest uppercase mb-2">Scoperta</p>
+                                            <p className="text-gray-400 text-sm">L'accesso agli atti ha svelato che il secondo bagno sul balcone era totalmente abusivo.</p>
+                                        </div>
+                                        <div className="md:w-1/3 border-l-0 md:border-l border-t md:border-t-0 border-white/10 pt-4 md:pt-0 md:pl-8">
+                                            <p className="text-[#ec4213] text-[10px] font-bold tracking-widest uppercase mb-2">Risultato</p>
+                                            <p className="text-white font-bold text-sm">Acquisto bloccato in tempo. Salvata la caparra.</p>
+                                        </div>
+                                    </div>
+
+                                    {/* Case 2 */}
+                                    <div className="bg-[#13141c] border border-white/5 rounded-3xl p-8 flex flex-col md:flex-row gap-8 items-start md:items-center hover:border-white/10 transition-colors">
+                                        <div className="md:w-1/3">
+                                            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-red-500/10 text-red-400 text-xs font-bold border border-red-500/20 mb-3">
+                                                <MapPin className="w-3 h-3" /> Crocetta
+                                            </div>
+                                            <h3 className="text-2xl font-bold text-white mb-1">Il Falso Affare</h3>
+                                            <p className="text-gray-500 text-xs font-mono italic">Dossier #002</p>
+                                        </div>
+                                        <div className="md:w-1/3 border-l-0 md:border-l border-t md:border-t-0 border-white/10 pt-4 md:pt-0 md:pl-8">
+                                            <p className="text-[#ec4213] text-[10px] font-bold tracking-widest uppercase mb-2">Problema</p>
+                                            <p className="text-gray-300 text-sm">Venduto come "Ampio loft con soppalco abitabile". Prezzo gonfiato.</p>
+                                        </div>
+                                        <div className="md:w-1/3 border-l-0 md:border-l border-t md:border-t-0 border-white/10 pt-4 md:pt-0 md:pl-8">
+                                            <p className="text-gray-500 text-[10px] font-bold tracking-widest uppercase mb-2">Scoperta</p>
+                                            <p className="text-gray-400 text-sm">Altezze non a norma. Soppalco solo un "locale di sgombero" illegale.</p>
+                                        </div>
+                                        <div className="md:w-1/3 border-l-0 md:border-l border-t md:border-t-0 border-white/10 pt-4 md:pt-0 md:pl-8">
+                                            <p className="text-[#ec4213] text-[10px] font-bold tracking-widest uppercase mb-2">Risultato</p>
+                                            <p className="text-white font-bold text-sm">Prezzo abbattuto di 18.000€. Comprato al VERO valore di mercato.</p>
+                                        </div>
+                                    </div>
+
+                                    {/* Case 3 */}
+                                    <div className="bg-[#13141c] border border-white/5 rounded-3xl p-8 flex flex-col md:flex-row gap-8 items-start md:items-center hover:border-white/10 transition-colors">
+                                        <div className="md:w-1/3">
+                                            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-red-500/10 text-red-400 text-xs font-bold border border-red-500/20 mb-3">
+                                                <MapPin className="w-3 h-3" /> San Salvario
+                                            </div>
+                                            <h3 className="text-2xl font-bold text-white mb-1">L'Incubo del Mutuo</h3>
+                                            <p className="text-gray-500 text-xs font-mono italic">Dossier #003</p>
+                                        </div>
+                                        <div className="md:w-1/3 border-l-0 md:border-l border-t md:border-t-0 border-white/10 pt-4 md:pt-0 md:pl-8">
+                                            <p className="text-[#ec4213] text-[10px] font-bold tracking-widest uppercase mb-2">Problema</p>
+                                            <p className="text-gray-300 text-sm">RTI del venditore "perfetta". Cliente pronto a versare 20.000€.</p>
+                                        </div>
+                                        <div className="md:w-1/3 border-l-0 md:border-l border-t md:border-t-0 border-white/10 pt-4 md:pt-0 md:pl-8">
+                                            <p className="text-gray-500 text-[10px] font-bold tracking-widest uppercase mb-2">Scoperta</p>
+                                            <p className="text-gray-400 text-sm">Muro portante parzialmente demolito senza deposito Genio Civile. Mutuo impossibile.</p>
+                                        </div>
+                                        <div className="md:w-1/3 border-l-0 md:border-l border-t md:border-t-0 border-white/10 pt-4 md:pt-0 md:pl-8">
+                                            <p className="text-[#ec4213] text-[10px] font-bold tracking-widest uppercase mb-2">Risultato</p>
+                                            <p className="text-white font-bold text-sm">Sanatoria a carico del venditore (4.500€) prima del rogito.</p>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+
                         </motion.div>
                     )}
                 </AnimatePresence>
             </section>
 
-            {/* LA TUA ASSICURAZIONE BLINDATA (REBUILT WITH ALL 4 FOLDERS) */}
+            {/* LA TUA ASSICURAZIONE BLINDATA */}
             <section className="max-w-7xl mx-auto px-6 py-20">
                 <div className="relative bg-[#0B0C15] rounded-3xl border border-white/10 overflow-hidden shadow-2xl p-8 md:p-12 lg:p-20">
                     <div className="absolute top-1/2 right-0 -translate-y-1/2 w-[60%] h-[120%] bg-[#ec4213]/10 blur-[120px] rounded-full pointer-events-none"></div>
@@ -531,45 +644,45 @@ export default function PrivatiView() {
                             </div>
                         </div>
 
-                        {/* CSS FOLDER ARTWORK (NOW WITH ALL 4 TABS) */}
+                        {/* CSS FOLDER ARTWORK */}
                         <div className="order-1 lg:order-2 flex justify-center items-center perspective-1000 py-10">
                             <div className="relative w-full max-w-sm aspect-[4/5] floating-asset mx-auto">
 
                                 {/* Base Shadow/Glow underneath everything */}
                                 <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[110%] h-[110%] bg-[#ec4213]/20 blur-[60px] rounded-full pointer-events-none"></div>
 
-                                {/* 👇 LAYER 0: Verifica Agibilità */}
+                                {/* Layer 0: Verifica Agibilità */}
                                 <div className="absolute bottom-[28px] left-0 w-full h-[88%] bg-[#2a303c] rounded-t-xl shadow-[0_-8px_20px_-5px_rgba(0,0,0,0.6)] transform scale-[0.88] z-0 border-t border-white/10">
                                     <div className="absolute -top-7 left-4 w-[28%] h-8 bg-[#2a303c] folder-tab flex items-end justify-center pb-1 border-t border-white/10">
                                         <span className="text-[8px] font-bold text-slate-500 uppercase tracking-widest">Agibilità</span>
                                     </div>
                                 </div>
 
-                                {/* 👇 LAYER 1: Stato di Fatto */}
+                                {/* Layer 1: Stato di Fatto */}
                                 <div className="absolute bottom-[21px] left-0 w-full h-[88%] bg-[#3b4352] rounded-t-xl shadow-[0_-8px_20px_-5px_rgba(0,0,0,0.5)] transform scale-[0.91] z-10 border-t border-white/20">
                                     <div className="absolute -top-7 left-[26%] w-[28%] h-8 bg-[#3b4352] folder-tab flex items-end justify-center pb-1 border-t border-white/20">
                                         <span className="text-[8px] font-bold text-slate-400 uppercase tracking-widest">Stato di Fatto</span>
                                     </div>
                                 </div>
 
-                                {/* 👇 LAYER 2: Ricerca Storica (THE MISSING LAYER RESTORED!) */}
+                                {/* Layer 2: Ricerca Storica */}
                                 <div className="absolute bottom-[14px] left-0 w-full h-[88%] bg-[#4b5563] rounded-t-xl shadow-[0_-8px_20px_-5px_rgba(0,0,0,0.4)] transform scale-[0.94] z-20 border-t border-white/30">
                                     <div className="absolute -top-7 left-[48%] w-[28%] h-8 bg-[#4b5563] folder-tab flex items-end justify-center pb-1 border-t border-white/30">
                                         <span className="text-[8px] font-bold text-slate-300 uppercase tracking-widest">Ricerca Storica</span>
                                     </div>
                                 </div>
 
-                                {/* 👇 LAYER 3: Dati Generali (Moved up to z-30) */}
+                                {/* Layer 3: Dati Generali */}
                                 <div className="absolute bottom-[7px] left-0 w-full h-[88%] bg-[#64748b] rounded-t-xl shadow-[0_-8px_20px_-5px_rgba(0,0,0,0.4)] transform scale-[0.97] z-30 border-t border-white/40">
                                     <div className="absolute -top-7 right-4 w-[28%] h-8 bg-[#64748b] folder-tab flex items-end justify-center pb-1 border-t border-white/40">
                                         <span className="text-[8px] font-bold text-slate-200 uppercase tracking-widest">Dati Generali</span>
                                     </div>
                                 </div>
 
-                                {/* Front Folder: APE & Content (THE EXACT GRADIENT FROM PHOTO) */}
+                                {/* Front Folder */}
                                 <div className="absolute bottom-0 left-0 w-full h-[88%] bg-gradient-to-r from-[#d1d9e2] via-[#e2e8f0] to-[#ffcba4] rounded-t-xl shadow-[0_15px_50px_rgba(0,0,0,0.6)] transform scale-100 z-40 flex flex-col items-center justify-start text-center p-6 border-t border-white shadow-[inset_0_1px_4px_rgba(255,255,255,1)] overflow-hidden">
 
-                                    {/* The intense internal orange glow on the right side */}
+                                    {/* Orange glow */}
                                     <div className="absolute top-1/2 right-[-20%] -translate-y-1/2 w-[250px] h-[300px] bg-[#ec4213] opacity-60 blur-[60px] rounded-full pointer-events-none mix-blend-overlay"></div>
                                     <div className="absolute top-1/2 right-[-10%] -translate-y-1/2 w-[150px] h-[200px] bg-white opacity-40 blur-[40px] rounded-full pointer-events-none mix-blend-overlay"></div>
 
@@ -580,14 +693,12 @@ export default function PrivatiView() {
 
                                     {/* Inner Frosted Card */}
                                     <div className="w-full h-full relative mt-2 z-10">
-                                        {/* Background Folder Icon Watermark */}
                                         <div className="absolute top-0 right-0 p-2 opacity-10">
                                             <FolderOpen className="w-24 h-24 text-slate-900" />
                                         </div>
 
                                         <div className="flex flex-col items-center justify-center h-full gap-6 border-[2px] border-solid border-white/60 rounded-xl p-5 relative bg-white/30 backdrop-blur-md shadow-[inset_0_0_20px_rgba(255,255,255,0.6),0_8px_32px_rgba(0,0,0,0.1)]">
 
-                                            {/* Shield Badge */}
                                             <div className="w-16 h-16 rounded-full bg-[#1e293b] border-4 border-white shadow-xl flex items-center justify-center text-white relative group cursor-pointer hover:scale-105 transition-transform duration-300">
                                                 <ShieldCheck className="w-8 h-8 text-white" />
                                                 <div className="absolute -bottom-2 bg-[#ec4213] text-[9px] font-bold px-2 py-0.5 rounded text-white shadow-md uppercase tracking-wider">Approved</div>
