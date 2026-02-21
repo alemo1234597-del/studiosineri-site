@@ -1,30 +1,30 @@
 "use client";
 
 import { useState } from "react";
-import { submitNotai } from '@/app/actions/submit-notai'
+import { submitImprese } from '@/app/actions/submit-imprese'
+import { GlassPanel } from "@/components/ui/GlassPanel";
+import { PrimaryButton } from "@/components/ui/PrimaryButton";
+import { SectionHeading } from "@/components/ui/SectionHeading";
+import { FeatureCard } from "@/components/ui/FeatureCard";
 import {
-    DraftingCompass, // Changed Icon for Logo
-    ArrowRight, PlayCircle, FileText, ShieldCheck,
-    FolderOpen, FolderX, AlertTriangle, History, Zap, UserX, X,
-    Check, Rocket, Loader2, CheckCircle, AlertCircle, RefreshCw
+    TrendingDown,
+    Handshake,
+    Gavel,
+    HardHat,
+    Lock,
+    ShieldCheck,
+    FileText,
+    CheckCircle,
+    ArrowRight,
+    Loader2,
+    AlertCircle
 } from "lucide-react";
-import { motion, AnimatePresence } from "framer-motion";
+import Image from "next/image";
 
-export default function NotaiView() {
+export default function ImpreseView() {
     // 👇 FORM STATE
     const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle')
     const [errorMessage, setErrorMessage] = useState('')
-
-    // 👇 PROTOCOL SECTION STATE
-    const [activeStep, setActiveStep] = useState(0);
-
-    // 👇 SCROLL FUNCTION
-    const scrollToSection = (id: string) => {
-        const element = document.getElementById(id);
-        if (element) {
-            element.scrollIntoView({ behavior: 'smooth' });
-        }
-    };
 
     async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
         event.preventDefault()
@@ -34,7 +34,7 @@ export default function NotaiView() {
 
         try {
             const formData = new FormData(form)
-            const result = await submitNotai(formData)
+            const result = await submitImprese(formData)
 
             if (result.success) {
                 setStatus('success')
@@ -44,375 +44,362 @@ export default function NotaiView() {
                 setErrorMessage(result.message || 'Errore sconosciuto')
             }
         } catch (e) {
+            console.error('Submission Error:', e)
             setStatus('error')
             setErrorMessage('Errore di connessione')
         }
     }
 
-    const steps = [
-        {
-            id: 0,
-            title: "01. Pre-Istruttoria",
-            desc: "Analisi documentale immediata entro 24h.",
-            contentTitle: "DATA ROOM COMPLETA",
-            contentText: "Creiamo immediatamente una Data Room strutturata con tutti i documenti digitalizzati e organizzati per un'istruttoria senza intoppi.",
-            contentList: ["Scansione HD", "Indicizzazione", "Accesso Cloud"],
-            icon: FolderOpen,
-            tag: "ORGANIZED"
-        },
-        {
-            id: 1,
-            title: "02. Pre-Stipula",
-            desc: "Verifica conformità e tutela delle parti.",
-            contentTitle: "RELAZIONE TECNICA INTEGRATA (RTI)",
-            contentText: "Una relazione tecnica esaustiva che garantisce la conformità urbanistica e catastale, eliminando rischi di nullità e responsabilità per il Notaio.",
-            contentList: ["Verifica Ante '67", "Sanatoria Rapida", "Bollino di Conformità"],
-            icon: ShieldCheck,
-            tag: "VERIFIED"
-        },
-        {
-            id: 2,
-            title: "03. Post-Stipula",
-            desc: "Chiusura pratica automatizzata.",
-            contentTitle: "ADEMPIMENTI AUTOMATICI",
-            contentText: "Gestione completa del post-stipula con aggiornamenti in tempo reale. Volture e invii telematici eseguiti automaticamente per chiudere il ciclo.",
-            contentList: ["Voltura Catastale", "Invio Telematico", "Archiviazione"],
-            icon: RefreshCw,
-            tag: "COMPLETED"
-        }
-    ];
-
-    const activeContent = steps.find(s => s.id === activeStep) || steps[0];
-
     return (
-        <div className="min-h-screen bg-[#020412] text-slate-400 font-display selection:bg-[#FF5A36] selection:text-white overflow-x-hidden">
+        <div className="min-h-screen bg-[#020617] text-slate-300 font-display selection:bg-[#FF5A36]/30 selection:text-[#FF5A36]">
 
-            {/* HEADER / NAVBAR (FIXED TO MATCH IMAGE 1) */}
-            <header className="fixed top-0 left-0 right-0 z-50 bg-[#020412]/80 backdrop-blur-md border-b border-white/5">
-                <div className="max-w-[1280px] mx-auto px-6 h-20 flex items-center justify-between">
-                    {/* Logo Area */}
-                    <div className="flex items-center gap-2">
-                        <DraftingCompass className="text-[#FF5A36] w-8 h-8" />
-                        <span className="text-white text-xl font-bold tracking-wide">APEX</span>
-                    </div>
-
-                    {/* Nav Links - Uppercase & Spaced */}
-                    <div className="hidden md:flex items-center gap-10">
-                        <button onClick={() => scrollToSection('problems')} className="text-xs font-bold text-white hover:text-[#FF5A36] transition-colors tracking-widest uppercase">PROBLEMI</button>
-                        <button onClick={() => scrollToSection('protocol')} className="text-xs font-bold text-white hover:text-[#FF5A36] transition-colors tracking-widest uppercase">PROTOCOLLO</button>
-                        <button onClick={() => scrollToSection('protocol')} className="text-xs font-bold text-white hover:text-[#FF5A36] transition-colors tracking-widest uppercase">DATA ROOM</button>
-                    </div>
-
-                    {/* Orange Action Button */}
-                    <button
-                        onClick={() => scrollToSection('contact-form')}
-                        className="bg-[#FF5A36] hover:bg-[#ff7a5c] text-white px-6 py-3 rounded-full font-bold text-sm transition-all shadow-[0_0_20px_rgba(255,90,54,0.3)] hover:shadow-[0_0_30px_rgba(255,90,54,0.5)] flex items-center gap-2"
-                    >
-                        Richiedi Audit <ArrowRight className="w-4 h-4" />
-                    </button>
+            {/* Hero Section */}
+            <section className="relative pt-32 pb-32 overflow-hidden">
+                <div className="absolute inset-0 z-0">
+                    <div className="absolute inset-0 bg-[#020617]/80 z-10"></div>
+                    <Image
+                        src="https://images.unsplash.com/photo-1541888946425-d81bb19240f5?q=80&w=2070&auto=format&fit=crop"
+                        alt="Background"
+                        fill
+                        className="object-cover opacity-30"
+                        priority
+                    />
                 </div>
-            </header>
 
-            {/* HERO SECTION */}
-            <section className="relative pt-32 pb-20 px-6 lg:px-20 overflow-hidden bg-[radial-gradient(circle_at_50%_0%,rgba(255,90,54,0.15)_0%,rgba(2,4,18,0)_60%)]">
-                <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[600px] bg-[#FF5A36]/5 rounded-full blur-[100px] pointer-events-none"></div>
-                <div className="max-w-[1280px] mx-auto grid lg:grid-cols-2 gap-16 items-center">
-                    <div className="flex flex-col gap-8 z-10">
-                        <div className="flex items-center gap-2 text-[#FF5A36] font-mono text-xs tracking-wider uppercase border border-[#FF5A36]/20 bg-[#FF5A36]/5 w-fit px-3 py-1 rounded-full shadow-[0_0_10px_rgba(255,90,54,0.2)]">
-                            <span className="w-1.5 h-1.5 rounded-full bg-[#FF5A36] animate-pulse shadow-[0_0_8px_#FF5A36]"></span>
-                            Sistema Operativo Notarile v2.4
-                        </div>
-                        <h1 className="text-5xl lg:text-7xl font-extrabold leading-[0.95] tracking-tight text-white">
-                            L'ATTO <br />
-                            <span className="text-transparent bg-clip-text bg-gradient-to-r from-white to-slate-400">INECCEPIBILE.</span> <br />
-                            <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#FF5A36] to-[#ff8c69] drop-shadow-[0_0_15px_rgba(255,90,54,0.6)]">SENZA RINVII.</span>
-                        </h1>
-                        <p className="text-lg text-slate-400 max-w-lg leading-relaxed">
-                            Il partner tecnico definitivo per notai che non accettano compromessi. Precisione ingegneristica per rogiti blindati e conformità garantita.
-                        </p>
-                        <div className="flex flex-wrap gap-4 mt-2">
-                            <button onClick={() => document.getElementById('contact-form')?.scrollIntoView({ behavior: 'smooth' })} className="group relative overflow-hidden rounded-xl bg-[#FF5A36] px-8 py-4 font-bold text-white shadow-[0_0_20px_rgba(255,90,54,0.4)] hover:shadow-[0_0_30px_rgba(255,90,54,0.6)] transition-all">
-                                <span className="relative z-10 flex items-center gap-2">
-                                    RICHIEDI AUDIT
-                                    <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-                                </span>
-                            </button>
-                            <button className="group flex items-center gap-2 rounded-xl border border-white/10 bg-white/5 px-8 py-4 font-bold text-white hover:bg-white/10 transition-all backdrop-blur-sm">
-                                <PlayCircle className="w-5 h-5" />
-                                COME FUNZIONA
-                            </button>
-                        </div>
+                <div className="container mx-auto px-6 relative z-10 text-center">
+                    <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-[#FF5A36]/30 bg-[#0f172a]/80 backdrop-blur mb-8">
+                        <span className="relative flex h-2 w-2">
+                            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#FF5A36] opacity-75"></span>
+                            <span className="relative inline-flex rounded-full h-2 w-2 bg-[#FF5A36]"></span>
+                        </span>
+                        <span className="text-[#FF5A36] text-xs font-bold uppercase tracking-widest">
+                            Accesso limitato alle categorie OG/OS
+                        </span>
                     </div>
 
-                    {/* 3D CARD ANIMATION */}
-                    <motion.div
-                        className="relative z-10 flex justify-center lg:justify-end"
-                        animate={{ y: [0, -20, 0] }}
-                        transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
-                    >
-                        <div className="relative w-full max-w-[500px] aspect-[4/3] rounded-3xl bg-[#1e293b]/40 backdrop-blur-xl border border-white/10 overflow-hidden shadow-[0_0_30px_rgba(255,90,54,0.15)]">
-                            <div className="absolute top-0 w-full h-12 border-b border-white/10 flex items-center px-4 justify-between bg-black/20">
-                                <div className="flex gap-2">
-                                    <div className="w-3 h-3 rounded-full bg-red-500/50"></div>
-                                    <div className="w-3 h-3 rounded-full bg-yellow-500/50"></div>
-                                    <div className="w-3 h-3 rounded-full bg-green-500/50"></div>
-                                </div>
-                                <div className="font-mono text-[10px] text-slate-500">ID_PRATICA: 8492-X</div>
-                            </div>
-                            <div className="pt-16 px-6 pb-6 h-full flex flex-col justify-between">
-                                <div className="flex justify-between items-start">
-                                    <div>
-                                        <div className="font-mono text-xs text-[#FF5A36] mb-1">ANALISI PRELIMINARE</div>
-                                        <h3 className="text-2xl font-bold text-white">Immobile Via Roma 42</h3>
-                                        <p className="text-sm text-slate-400">Torino, TO</p>
-                                    </div>
-                                    <div className="bg-[#FF5A36]/20 text-[#FF5A36] border border-[#FF5A36]/30 px-3 py-1 rounded text-xs font-bold flex items-center gap-1 shadow-[0_0_15px_rgba(255,90,54,0.4)]">
-                                        <CheckCircle className="w-4 h-4" />
-                                        STATUS: ROGITABILE
-                                    </div>
-                                </div>
+                    <h1 className="text-5xl md:text-7xl lg:text-8xl font-extrabold leading-tight tracking-tight text-white mb-6 drop-shadow-2xl">
+                        NON CERCARE CLIENTI.<br />
+                        <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#FF5A36] to-[#FF8A65]">
+                            PRENDI GLI APPALTI.
+                        </span>
+                    </h1>
 
-                                <div className="relative w-full h-32 bg-gradient-to-r from-blue-900/20 to-purple-900/20 rounded-lg border border-white/5 flex items-center justify-center overflow-hidden">
-                                    <div className="absolute inset-0" style={{ backgroundImage: "linear-gradient(rgba(255,255,255,0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.05) 1px, transparent 1px)", backgroundSize: "20px 20px" }}></div>
-                                    <div className="flex gap-4">
-                                        <div className="bg-white/10 backdrop-blur border border-white/10 p-2 rounded flex flex-col items-center w-20">
-                                            <FileText className="text-slate-400 w-5 h-5 mb-2" />
-                                            <div className="w-12 h-1 bg-slate-600 rounded mt-2"></div>
-                                            <div className="w-8 h-1 bg-slate-600 rounded mt-1"></div>
-                                        </div>
-                                        <div className="bg-[#FF5A36]/10 backdrop-blur border border-[#FF5A36]/30 p-2 rounded flex flex-col items-center w-20 scale-110 shadow-lg relative z-10">
-                                            <ShieldCheck className="text-[#FF5A36] w-5 h-5 mb-2" />
-                                            <div className="w-12 h-1 bg-[#FF5A36]/40 rounded mt-2"></div>
-                                            <div className="w-10 h-1 bg-[#FF5A36]/40 rounded mt-1"></div>
-                                        </div>
-                                        <div className="bg-white/10 backdrop-blur border border-white/10 p-2 rounded flex flex-col items-center w-20">
-                                            <FolderOpen className="text-slate-400 w-5 h-5 mb-2" />
-                                            <div className="w-12 h-1 bg-slate-600 rounded mt-2"></div>
-                                            <div className="w-8 h-1 bg-slate-600 rounded mt-1"></div>
-                                        </div>
-                                    </div>
-                                </div>
+                    <p className="text-slate-400 text-lg md:text-xl font-medium leading-relaxed max-w-3xl mx-auto mb-10">
+                        Il <strong className="text-white">PROTOCOLLO ATTIVA IMPRESA®</strong> è il primo Private Procurement Network che garantisce l'accesso diretto a cantieri finanziati, eliminando la concorrenza sleale.
+                    </p>
 
-                                <div className="grid grid-cols-3 gap-2 border-t border-white/10 pt-4">
-                                    <div><div className="text-[10px] text-slate-500 font-mono">CATASTO</div><div className="text-sm font-bold text-white">100% OK</div></div>
-                                    <div><div className="text-[10px] text-slate-500 font-mono">URBANISTICA</div><div className="text-sm font-bold text-white">VERIFICATO</div></div>
-                                    <div><div className="text-[10px] text-slate-500 font-mono">APE</div><div className="text-sm font-bold text-white">CLASSE A1</div></div>
-                                </div>
-                            </div>
-                            {/* SCANNING LINE ANIMATION */}
-                            <motion.div
-                                className="absolute inset-x-0 h-1 bg-[#FF5A36]/50 blur-[2px] z-20 shadow-[0_0_15px_rgba(255,90,54,0.6)]"
-                                animate={{ top: ["0%", "100%"] }}
-                                transition={{ duration: 3, repeat: Infinity, ease: "linear" }}
-                            />
-                            {/* GRADIENT SCAN ANIMATION */}
-                            <motion.div
-                                className="absolute inset-0 bg-gradient-to-b from-[#FF5A36]/5 to-transparent z-10 opacity-30 pointer-events-none"
-                                animate={{ top: ["0%", "100%"] }}
-                                transition={{ duration: 3, repeat: Infinity, ease: "linear" }}
-                            />
-                        </div>
-                    </motion.div>
-                </div>
-            </section>
-
-            {/* PROBLEM SECTION */}
-            <section id="problems" className="py-20 px-6 lg:px-20 bg-gradient-to-b from-[#020412] to-[#0f172a]">
-                <div className="max-w-[1280px] mx-auto">
-                    <div className="mb-12">
-                        <h2 className="text-3xl font-extrabold tracking-tight mb-4 text-white">PERCHÉ GLI ATTI SALTANO</h2>
-                        <div className="h-1 w-20 bg-[#FF5A36] rounded-full shadow-[0_0_10px_rgba(255,90,54,0.4)]"></div>
-                    </div>
-                    <div className="grid md:grid-cols-3 gap-6">
-                        <FeatureCard icon={FolderX} title="Dossier Incompleto" desc="Documentazione frammentata che blocca l'istruttoria all'ultimo miglio." />
-                        <FeatureCard icon={AlertTriangle} title="Bomba Urbanistica" desc="Abusi edilizi non rilevati che emergono solo al momento della stipula." />
-                        <FeatureCard icon={History} title="Tecnico Lento" desc="Tempi di risposta incompatibili con le scadenze dello studio notarile." />
+                    <div className="flex flex-col sm:flex-row gap-6 justify-center items-center">
+                        <button onClick={() => document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })} className="px-8 py-4 bg-[#FF5A36] hover:bg-[#ff7a5c] text-white font-bold rounded-full transition-all flex items-center gap-2 shadow-[0_0_20px_rgba(255,90,54,0.3)] hover:shadow-[0_0_30px_rgba(255,90,54,0.5)] transform hover:-translate-y-1">
+                            Candidati per entrare nel Network
+                            <CheckCircle className="w-5 h-5" />
+                        </button>
+                        <button className="h-16 px-10 rounded-full border border-white/20 hover:bg-white/5 text-white text-base font-bold transition-all flex items-center justify-center gap-3 uppercase tracking-wider">
+                            <FileText className="w-5 h-5" />
+                            Scarica il White Paper
+                        </button>
                     </div>
                 </div>
             </section>
 
-            {/* PROTOCOL SECTION */}
-            <section id="protocol" className="py-24 px-6 lg:px-20 bg-[#0f172a]">
-                <div className="max-w-[1280px] mx-auto">
-                    <div className="text-center mb-16">
-                        <h2 className="text-3xl lg:text-4xl font-extrabold mb-4 text-white">IL PROTOCOLLO <span className="text-[#FF5A36] drop-shadow-[0_0_15px_rgba(255,90,54,0.6)]">APEX</span></h2>
-                        <p className="text-slate-400 max-w-2xl mx-auto">Un flusso di lavoro strutturato per eliminare l'incertezza.</p>
-                    </div>
-                    <div className="flex flex-col lg:flex-row gap-12 items-stretch">
-                        <div className="w-full lg:w-1/3 flex flex-col gap-4">
-                            {steps.map((step) => (
-                                <button key={step.id} onClick={() => setActiveStep(step.id)}
-                                    className={`w-full text-left p-6 rounded-xl relative overflow-hidden group transition-all duration-300 border ${activeStep === step.id ? "bg-gradient-to-r from-[#FF5A36]/10 to-transparent border-[#FF5A36] text-[#FF5A36]" : "bg-transparent border-transparent text-slate-500 hover:bg-white/5"
-                                        }`}
-                                >
-                                    <h4 className="text-lg font-bold mb-1 flex justify-between items-center">
-                                        {step.title}
-                                        {activeStep === step.id && <ArrowRight className="w-5 h-5 animate-pulse" />}
-                                    </h4>
-                                    <p className={`text-sm ${activeStep === step.id ? "text-slate-300" : "text-slate-600"}`}>{step.desc}</p>
-                                </button>
-                            ))}
-                        </div>
-                        <div className="w-full lg:w-2/3">
-                            <div className="bg-[#1e293b]/40 backdrop-blur-xl rounded-3xl p-8 lg:p-12 min-h-[450px] flex flex-col lg:flex-row gap-8 items-center border border-white/10 shadow-[0_0_30px_rgba(255,90,54,0.15)]">
-                                <AnimatePresence mode="wait">
-                                    <motion.div
-                                        key={activeStep}
-                                        initial={{ opacity: 0, x: 20 }}
-                                        animate={{ opacity: 1, x: 0 }}
-                                        exit={{ opacity: 0, x: -20 }}
-                                        transition={{ duration: 0.3 }}
-                                        className="flex flex-col lg:flex-row gap-8 items-center w-full"
-                                    >
-                                        <div className="flex-1">
-                                            <div className="inline-flex items-center gap-2 px-3 py-1 rounded bg-[#FF5A36]/10 text-[#FF5A36] font-mono text-xs mb-6 border border-[#FF5A36]/20">
-                                                <Zap className="w-4 h-4" /> STATUS: {activeContent.tag}
-                                            </div>
-                                            <h3 className="text-3xl font-bold text-white mb-4">{activeContent.contentTitle}</h3>
-                                            <p className="text-slate-300 leading-relaxed mb-6">{activeContent.contentText}</p>
-                                            <ul className="space-y-3">
-                                                {activeContent.contentList.map((item, idx) => (
-                                                    <li key={idx} className="flex items-center gap-3 text-sm text-slate-400">
-                                                        <CheckCircle className="w-5 h-5 text-[#FF5A36]" /> {item}
-                                                    </li>
-                                                ))}
-                                            </ul>
-                                        </div>
-                                        <div className="w-full lg:w-64 aspect-square bg-gradient-to-br from-gray-900 to-black rounded-2xl border border-[#FF5A36] flex items-center justify-center shadow-2xl relative">
-                                            <div className="absolute inset-0 bg-[#FF5A36]/5 blur-xl"></div>
-                                            <activeContent.icon className="w-24 h-24 text-[#FF5A36] drop-shadow-[0_0_20px_rgba(255,90,54,0.8)]" />
-                                        </div>
-                                    </motion.div>
-                                </AnimatePresence>
-                            </div>
-                        </div>
+            {/* Pain Points */}
+            <section className="py-24 bg-[#020412]" id="problems">
+                <div className="container mx-auto px-6">
+                    <SectionHeading
+                        subtitle="Analisi di Settore"
+                        title="PERCHÉ LE IMPRESE ECCELLENTI FALLISCONO"
+                        description="Il mercato edile tradizionale è un sistema progettato per erodere i tuoi margini."
+                        align="center"
+                    />
+
+                    <div className="grid md:grid-cols-3 gap-8 mt-16">
+                        <FeatureCard
+                            icon={TrendingDown}
+                            title="Guerra del Ribasso"
+                            description="Combatti ogni giorno contro competitor improvvisati che distruggono il mercato con offerte sottocosto. Il risultato? Lavori senza margine e rischi finanziari enormi."
+                        />
+                        <FeatureCard
+                            icon={Handshake}
+                            title="Il Subappalto Tossico"
+                            description="Sei l'ultimo anello della catena. Il General Contractor incassa i soldi veri, tu ti prendi le responsabilità operative e i pagamenti a 120 giorni (se va bene)."
+                        />
+                        <FeatureCard
+                            icon={Gavel}
+                            title="Burocrazia Tecnica"
+                            description="Cantieri fermi per mesi a causa di permessi mancanti o progettazioni errate. I costi fissi corrono, i ricavi si fermano."
+                        />
                     </div>
                 </div>
             </section>
 
-            {/* COMPARISON SECTION */}
-            <section id="comparison" className="py-20 px-6 lg:px-20 bg-gradient-to-b from-[#0f172a] to-[#020412]">
-                <div className="max-w-[960px] mx-auto">
-                    <div className="bg-[#1e293b]/40 backdrop-blur-xl rounded-3xl overflow-hidden border border-white/10">
-                        <div className="grid grid-cols-1 md:grid-cols-2">
-                            <div className="p-8 md:p-12 border-b md:border-b-0 md:border-r border-white/5 bg-white/[0.02]">
-                                <h3 className="text-xl font-bold text-slate-400 mb-8 flex items-center gap-2"><UserX /> Geometra "Di Parte"</h3>
-                                <ul className="space-y-6">
-                                    <ComparisonItem bad text="Conflitto d'interessi" sub="Tende a minimizzare i problemi." />
-                                    <ComparisonItem bad text="Linguaggio Tecnico" sub="Comunica in gergo incomprensibile." />
-                                    <ComparisonItem bad text="Reperibilità Casuale" sub="Non risponde durante la stipula." />
-                                </ul>
-                            </div>
-                            <div className="p-8 md:p-12 bg-[#FF5A36]/[0.03] relative">
-                                <div className="absolute top-0 right-0 p-4"><span className="bg-[#FF5A36] text-white text-xs font-bold px-2 py-1 rounded shadow-lg">RECOMMENDED</span></div>
-                                <h3 className="text-xl font-bold text-white mb-8 flex items-center gap-2 drop-shadow-[0_0_15px_rgba(255,90,54,0.6)]"><ShieldCheck className="text-[#FF5A36]" /> STUDIO APEX</h3>
-                                <ul className="space-y-6">
-                                    <ComparisonItem text="Terzietà Assoluta" sub="Garanzia imparziale a tutela del Notaio." />
-                                    <ComparisonItem text="Problem Solving" sub="Soluzioni proattive prima che diventino ostacoli." />
-                                    <ComparisonItem text="Reperibilità H24" sub="Assistenza immediata durante l'atto." />
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            {/* FORM SECTION - WIRED UP 🚀 */}
-            <section id="contact-form" className="py-32 px-6 lg:px-20 relative overflow-hidden bg-gradient-to-t from-[#020412] to-[#0f172a]">
-                <div className="max-w-[800px] mx-auto relative z-10">
-                    <div className="bg-[#1e293b]/40 backdrop-blur-xl rounded-3xl p-10 lg:p-16 text-center border-t border-[#FF5A36]/20 shadow-[0_0_50px_rgba(0,0,0,0.5)]">
-                        <div className="inline-block mb-6 p-4 rounded-full bg-[#FF5A36]/10 border border-[#FF5A36]/20 shadow-[0_0_20px_rgba(255,90,54,0.2)] animate-pulse">
-                            <AlertTriangle className="text-[#FF5A36] w-8 h-8" />
-                        </div>
-                        <h2 className="text-3xl md:text-5xl font-extrabold mb-6 leading-tight text-white">
-                            TESTACI SU UNA <br /><span className="text-white">PRATICA COMPLESSA</span>
+            {/* How It Works */}
+            <section id="protocol" className="py-24 bg-gradient-to-b from-[#020412] to-[#0f172a] relative overflow-hidden">
+                <div className="container mx-auto px-6 relative z-10">
+                    <div className="text-center mb-20">
+                        <span className="text-[#FF5A36] font-bold tracking-[0.2em] text-xs uppercase">La Soluzione Corporate</span>
+                        <h2 className="text-4xl md:text-6xl font-extrabold text-white mt-4 uppercase">
+                            Come Funziona il Protocollo
                         </h2>
-                        <p className="text-slate-400 mb-10 text-lg">
-                            Hai una pratica ferma per dubbi urbanistici? Affidacela. Se non troviamo la soluzione in 48 ore, l'audit è gratuito.
-                        </p>
+                    </div>
 
-                        <form onSubmit={handleSubmit} className="flex flex-col gap-4 max-w-md mx-auto">
-                            <InputGroup label="NOME STUDIO NOTARILE" name="studio-name" placeholder="Es. Studio Rossi & Associati" type="text" />
+                    <div className="grid md:grid-cols-3 gap-12 relative">
+                        {/* Connecting Line */}
+                        <div className="hidden md:block absolute top-12 left-[16%] right-[16%] h-0.5 bg-gradient-to-r from-transparent via-[#FF5A36]/50 to-transparent z-0"></div>
 
-                            <div className="flex flex-col text-left gap-1">
-                                <label className="text-xs font-mono text-slate-500 ml-1">DISTRETTO</label>
-                                <div className="relative">
-                                    <select name="district" className="w-full bg-[#020412]/50 border border-white/10 rounded-xl px-4 py-3 text-white focus:border-[#FF5A36] focus:ring-1 focus:ring-[#FF5A36] outline-none transition-all appearance-none cursor-pointer">
-                                        <option>Torino</option>
-                                        <option>Milano</option>
-                                        <option>Cuneo</option>
-                                        <option>Alessandria</option>
-                                    </select>
-                                </div>
+                        {/* Step 1 */}
+                        <div className="relative z-10 flex flex-col items-center text-center group">
+                            <div className="w-24 h-24 rounded-full bg-[#0f172a] border-2 border-[#FF5A36] flex items-center justify-center mb-8 shadow-[0_0_20px_rgba(255,90,54,0.3)] group-hover:scale-110 transition-transform duration-300">
+                                <HardHat className="w-10 h-10 text-[#FF5A36]" />
+                            </div>
+                            <h3 className="text-[#FF5A36] text-sm font-bold tracking-widest uppercase mb-2">Fase 1</h3>
+                            <h4 className="text-xl font-extrabold text-white mb-4">Scouting & Ingegneria</h4>
+                            <p className="text-slate-400 text-sm leading-relaxed max-w-xs">
+                                Selezioniamo solo operazioni immobiliari già finanziate e cantierabili. Analisi tecnica preventiva per eliminare i rischi di fermo cantiere.
+                            </p>
+                        </div>
+
+                        {/* Step 2 */}
+                        <div className="relative z-10 flex flex-col items-center text-center group">
+                            <div className="w-24 h-24 rounded-full bg-[#0f172a] border-2 border-[#FF5A36] flex items-center justify-center mb-8 shadow-[0_0_20px_rgba(255,90,54,0.3)] group-hover:scale-110 transition-transform duration-300">
+                                <Lock className="w-10 h-10 text-[#FF5A36]" />
+                            </div>
+                            <h3 className="text-[#FF5A36] text-sm font-bold tracking-widest uppercase mb-2">Fase 2</h3>
+                            <h4 className="text-xl font-extrabold text-white mb-4">Esclusiva di Categoria</h4>
+                            <p className="text-slate-400 text-sm leading-relaxed max-w-xs">
+                                Assegnazione dello Slot Operativo. Nessuna gara al ribasso. L'impresa partner ha l'esclusiva sulla propria categoria (OG/OS) per la zona.
+                            </p>
+                        </div>
+
+                        {/* Step 3 */}
+                        <div className="relative z-10 flex flex-col items-center text-center group">
+                            <div className="w-24 h-24 rounded-full bg-[#0f172a] border-2 border-[#FF5A36] flex items-center justify-center mb-8 shadow-[0_0_20px_rgba(255,90,54,0.3)] group-hover:scale-110 transition-transform duration-300">
+                                <ShieldCheck className="w-10 h-10 text-[#FF5A36]" />
+                            </div>
+                            <h3 className="text-[#FF5A36] text-sm font-bold tracking-widest uppercase mb-2">Fase 3</h3>
+                            <h4 className="text-xl font-extrabold text-white mb-4">Incasso Blindato</h4>
+                            <p className="text-slate-400 text-sm leading-relaxed max-w-xs">
+                                Pagamenti garantiti da fondi depositati o SAL bancari diretti. Flusso di cassa pianificato e zero sorprese.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            {/* Status Board - GlassPanel Usage */}
+            <section id="status-board" className="py-24 bg-[#0f172a] relative">
+                <div className="container mx-auto px-6 relative z-10">
+                    <div className="flex flex-col md:flex-row justify-between items-end mb-10 gap-6">
+                        <div>
+                            <h2 className="text-4xl font-extrabold text-white uppercase tracking-tight mb-2">
+                                <span className="text-[#FF5A36] mr-2">///</span> Network Status Board
+                            </h2>
+                            <p className="text-slate-400">Disponibilità Slot Operativi - Aggiornamento in tempo reale</p>
+                        </div>
+                        <div className="flex items-center gap-2 text-xs text-[#FF5A36] bg-[#FF5A36]/10 px-3 py-1 rounded border border-[#FF5A36]/20 animate-pulse">
+                            <span className="w-2 h-2 rounded-full bg-green-500 shadow-[0_0_10px_rgba(34,197,94,0.8)]"></span>
+                            LIVE DATA FEED
+                        </div>
+                    </div>
+
+                    <GlassPanel className="p-0 overflow-hidden border border-white/10">
+                        <div className="overflow-x-auto">
+                            <table className="w-full text-left border-collapse">
+                                <thead>
+                                    <tr className="bg-[#1e293b]/50 text-slate-400 text-xs uppercase tracking-widest border-b border-white/10">
+                                        <th className="p-5 font-semibold">Categoria Operativa</th>
+                                        <th className="p-5 font-semibold">Descrizione</th>
+                                        <th className="p-5 font-semibold">Codice SOA</th>
+                                        <th className="p-5 font-semibold">Stato Slot</th>
+                                        <th className="p-5 font-semibold text-right">Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody className="divide-y divide-white/5 font-mono text-sm">
+                                    <tr className="hover:bg-white/5 transition-colors group">
+                                        <td className="p-5 font-bold text-white text-lg group-hover:text-[#FF5A36] transition-colors">OG1</td>
+                                        <td className="p-5 text-slate-300">Edifici Civili e Industriali</td>
+                                        <td className="p-5 text-slate-500">III-BIS / IV</td>
+                                        <td className="p-5">
+                                            <span className="inline-flex items-center gap-2 px-3 py-1 rounded bg-red-900/20 text-red-400 border border-red-900/30 uppercase text-xs font-bold">
+                                                <span className="w-1.5 h-1.5 rounded-full bg-red-500"></span> Occupied
+                                            </span>
+                                        </td>
+                                        <td className="p-5 text-right">
+                                            <span className="text-slate-600 text-xs uppercase cursor-not-allowed">Waitlist Only</span>
+                                        </td>
+                                    </tr>
+                                    <tr className="hover:bg-white/5 transition-colors group bg-[#1e293b]/20">
+                                        <td className="p-5 font-bold text-white text-lg group-hover:text-[#FF5A36] transition-colors">OS30</td>
+                                        <td className="p-5 text-slate-300">Impianti Elettrici</td>
+                                        <td className="p-5 text-slate-500">II / III</td>
+                                        <td className="p-5">
+                                            <span className="inline-flex items-center gap-2 px-3 py-1 rounded bg-green-900/20 text-green-400 border border-green-900/30 uppercase text-xs font-bold shadow-[0_0_10px_rgba(74,222,128,0.1)]">
+                                                <span className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse"></span> Available
+                                            </span>
+                                        </td>
+                                        <td className="p-5 text-right">
+                                            <button onClick={() => document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })} className="text-[#FF5A36] hover:text-white border border-[#FF5A36] hover:bg-[#FF5A36] px-4 py-1.5 rounded text-xs font-bold uppercase transition-all shadow-[0_0_15px_rgba(255,90,54,0.2)]">
+                                                Blocca Slot
+                                            </button>
+                                        </td>
+                                    </tr>
+                                    <tr className="hover:bg-white/5 transition-colors group">
+                                        <td className="p-5 font-bold text-white text-lg group-hover:text-[#FF5A36] transition-colors">OS3</td>
+                                        <td className="p-5 text-slate-300">Impianti Idrico-Sanitario</td>
+                                        <td className="p-5 text-slate-500">I / II</td>
+                                        <td className="p-5">
+                                            <span className="inline-flex items-center gap-2 px-3 py-1 rounded bg-yellow-900/20 text-yellow-400 border border-yellow-900/30 uppercase text-xs font-bold">
+                                                <span className="w-1.5 h-1.5 rounded-full bg-yellow-500"></span> In Selection
+                                            </span>
+                                        </td>
+                                        <td className="p-5 text-right">
+                                            <button onClick={() => document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })} className="text-slate-400 hover:text-white underline text-xs uppercase">
+                                                Inquire
+                                            </button>
+                                        </td>
+                                    </tr>
+                                    <tr className="hover:bg-white/5 transition-colors group bg-[#1e293b]/20">
+                                        <td className="p-5 font-bold text-white text-lg group-hover:text-[#FF5A36] transition-colors">OS6 / OS18</td>
+                                        <td className="p-5 text-slate-300">Finiture / Serramenti</td>
+                                        <td className="p-5 text-slate-500">I / II</td>
+                                        <td className="p-5">
+                                            <span className="inline-flex items-center gap-2 px-3 py-1 rounded bg-green-900/20 text-green-400 border border-green-900/30 uppercase text-xs font-bold shadow-[0_0_10px_rgba(74,222,128,0.1)]">
+                                                <span className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse"></span> Available
+                                            </span>
+                                        </td>
+                                        <td className="p-5 text-right">
+                                            <button onClick={() => document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })} className="text-[#FF5A36] hover:text-white border border-[#FF5A36] hover:bg-[#FF5A36] px-4 py-1.5 rounded text-xs font-bold uppercase transition-all shadow-[0_0_15px_rgba(255,90,54,0.2)]">
+                                                Blocca Slot
+                                            </button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </GlassPanel>
+                </div>
+            </section>
+
+            {/* Application Form - POWERED BY SUPABASE 🚀 */}
+            <section id="contact" className="py-24 relative bg-[#020617] border-t border-white/5">
+                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-4xl h-[600px] bg-[#FF5A36]/5 rounded-full blur-[100px] pointer-events-none z-0"></div>
+                <div className="container mx-auto px-6 relative z-10">
+                    <GlassPanel className="max-w-4xl mx-auto md:p-12 border border-[#FF5A36]/30 shadow-[0_0_40px_rgba(224,93,58,0.1)] bg-[#1e293b]/40 backdrop-blur-xl">
+                        <div className="text-center mb-12">
+                            <h2 className="text-3xl md:text-5xl font-extrabold text-white mb-2 uppercase tracking-tight">
+                                Candidatura per Ammissione
+                            </h2>
+                            <p className="text-[#FF5A36] text-sm uppercase tracking-widest mb-6 font-bold">
+                                Processo di Selezione Rigoroso
+                            </p>
+                            <p className="text-slate-400 text-base max-w-2xl mx-auto">
+                                Non accettiamo tutte le imprese. Verifichiamo solidità finanziaria e capacità tecnica. Compila il modulo per avviare l'istruttoria.
+                            </p>
+                        </div>
+
+                        {/* 👇 REAL FORM START */}
+                        <form onSubmit={handleSubmit} className="grid md:grid-cols-2 gap-6 max-w-3xl mx-auto">
+
+                            {/* Ragione Sociale */}
+                            <div className="col-span-2">
+                                <label className="block text-xs font-bold text-[#FF5A36] uppercase tracking-widest mb-2">Ragione Sociale Impresa</label>
+                                <input
+                                    name="ragione_sociale"
+                                    type="text"
+                                    required
+                                    placeholder="Es. Edilizia Futura S.r.l."
+                                    className="w-full bg-[#020412] border border-white/10 rounded px-4 py-4 text-white placeholder-slate-600 focus:outline-none focus:border-[#FF5A36] focus:ring-1 focus:ring-[#FF5A36] transition-all font-display"
+                                />
                             </div>
 
-                            <InputGroup label="NUMERO DI TELEFONO" name="phone" placeholder="+39 333 123 4567" type="tel" />
-                            <InputGroup label="EMAIL" name="email" placeholder="notaio@studio.it" type="email" />
+                            {/* Categoria */}
+                            <div className="col-span-2 md:col-span-1">
+                                <label className="block text-xs font-bold text-[#FF5A36] uppercase tracking-widest mb-2">Categoria Prevalente</label>
+                                <select
+                                    name="categoria_prevalente"
+                                    className="w-full bg-[#020412] border border-white/10 rounded px-4 py-4 text-white focus:outline-none focus:border-[#FF5A36] focus:ring-1 focus:ring-[#FF5A36] transition-all font-display appearance-none cursor-pointer"
+                                >
+                                    <option value="OG1">OG1 - Edifici Civili</option>
+                                    <option value="OS30">OS30 - Impianti Elettrici</option>
+                                    <option value="OS3">OS3 - Impianti Idrici</option>
+                                    <option value="OS6">OS6 - Finiture</option>
+                                    <option value="Altro">Altro</option>
+                                </select>
+                            </div>
 
-                            {/* ERROR MESSAGE */}
+                            {/* SOA */}
+                            <div className="col-span-2 md:col-span-1">
+                                <label className="block text-xs font-bold text-[#FF5A36] uppercase tracking-widest mb-2">Attestazione SOA</label>
+                                <select
+                                    name="attestazione_soa"
+                                    className="w-full bg-[#020412] border border-white/10 rounded px-4 py-4 text-white focus:outline-none focus:border-[#FF5A36] focus:ring-1 focus:ring-[#FF5A36] transition-all font-display appearance-none cursor-pointer"
+                                >
+                                    <option value="Nessuna">Nessuna</option>
+                                    <option value="I / II Classifica">I / II Classifica</option>
+                                    <option value="III / III-BIS Classifica">III / III-BIS Classifica</option>
+                                    <option value="IV o Superiore">IV o Superiore</option>
+                                </select>
+                            </div>
+
+                            {/* Fatturato */}
+                            <div className="col-span-2 md:col-span-1">
+                                <label className="block text-xs font-bold text-[#FF5A36] uppercase tracking-widest mb-2">Fatturato Ultimo Anno</label>
+                                <input
+                                    name="fatturato_ultimo_anno"
+                                    type="text"
+                                    required
+                                    placeholder="Es. € 500.000"
+                                    className="w-full bg-[#020412] border border-white/10 rounded px-4 py-4 text-white placeholder-slate-600 focus:outline-none focus:border-[#FF5A36] focus:ring-1 focus:ring-[#FF5A36] transition-all font-display"
+                                />
+                            </div>
+
+                            {/* Ostacolo */}
+                            <div className="col-span-2 md:col-span-1">
+                                <label className="block text-xs font-bold text-[#FF5A36] uppercase tracking-widest mb-2">Principale Ostacolo Attuale</label>
+                                <select
+                                    name="principale_ostacolo"
+                                    className="w-full bg-[#020412] border border-white/10 rounded px-4 py-4 text-white focus:outline-none focus:border-[#FF5A36] focus:ring-1 focus:ring-[#FF5A36] transition-all font-display appearance-none cursor-pointer"
+                                >
+                                    <option value="Ritardi Pagamenti">Ritardi Pagamenti</option>
+                                    <option value="Marginalità Bassa">Marginalità Bassa</option>
+                                    <option value="Discontinuità Lavoro">Discontinuità Lavoro</option>
+                                    <option value="Burocrazia">Burocrazia</option>
+                                </select>
+                            </div>
+
+                            {/* Error Message */}
                             {status === 'error' && (
-                                <div className="p-3 rounded-lg bg-red-900/20 border border-red-500/30 flex items-center gap-3">
-                                    <AlertCircle className="text-red-500 w-5 h-5" />
-                                    <span className="text-red-200 text-sm font-medium">{errorMessage}</span>
+                                <div className="col-span-2 flex items-center gap-3 bg-red-900/20 border border-red-500/30 p-4 rounded-xl mt-2">
+                                    <AlertCircle className="w-5 h-5 text-red-500 shrink-0" />
+                                    <p className="text-red-200 text-sm font-medium">{errorMessage}</p>
                                 </div>
                             )}
 
-                            <button
-                                type="submit"
-                                disabled={status === 'loading' || status === 'success'}
-                                className={`mt-4 w-full font-bold text-lg py-4 rounded-xl shadow-[0_0_20px_rgba(255,90,54,0.4)] hover:shadow-[0_0_30px_rgba(255,90,54,0.6)] hover:scale-[1.02] transition-all flex items-center justify-center gap-2
-                                    ${status === 'success' ? 'bg-green-600 cursor-default shadow-none hover:scale-100' : 'bg-[#FF5A36] text-white'}
-                                `}
-                            >
-                                {status === 'loading' ? (
-                                    <> <Loader2 className="w-6 h-6 animate-spin" /> ELABORAZIONE... </>
-                                ) : status === 'success' ? (
-                                    <> <CheckCircle className="w-6 h-6" /> RICHIESTA INVIATA </>
-                                ) : (
-                                    <> INIZIA LA SFIDA <Rocket className="w-5 h-5" /> </>
-                                )}
-                            </button>
+                            {/* Button */}
+                            <div className="col-span-2 pt-6">
+                                <button
+                                    type="submit"
+                                    disabled={status === 'loading' || status === 'success'}
+                                    className={`w-full py-5 rounded-lg font-bold uppercase tracking-wider transition-all flex items-center justify-center gap-3 text-lg
+                                        ${status === 'success' ? 'bg-green-600 text-white cursor-default shadow-none hover:scale-100' :
+                                            'bg-[#FF5A36] hover:bg-[#ff7a5c] text-white shadow-[0_0_20px_rgba(255,90,54,0.4)] hover:shadow-[0_0_30px_rgba(255,90,54,0.6)] transform hover:-translate-y-1'
+                                        }`}
+                                >
+                                    {status === 'loading' ? (
+                                        <> <Loader2 className="w-6 h-6 animate-spin" /> Elaborazione... </>
+                                    ) : status === 'success' ? (
+                                        <> <CheckCircle className="w-6 h-6" /> Candidatura Inviata! </>
+                                    ) : (
+                                        <> Invia Candidatura Ufficiale <ArrowRight className="w-5 h-5" /> </>
+                                    )}
+                                </button>
+                                <p className="text-center text-[10px] text-slate-500 mt-4 uppercase tracking-wider">
+                                    I dati saranno trattati secondo normativa GDPR vigente. Riservato titolari d'impresa.
+                                </p>
+                            </div>
+
                         </form>
-                        <p className="mt-6 text-xs text-slate-500 font-mono">*Riservato esclusivamente a Notai iscritti all'albo.</p>
-                    </div>
+                    </GlassPanel>
                 </div>
             </section>
         </div>
     );
-}
-
-// Helpers
-function FeatureCard({ icon: Icon, title, desc }: any) {
-    return (
-        <div className="bg-[#1e293b]/40 backdrop-blur-xl rounded-2xl p-8 border border-white/10 hover:bg-white/5 transition-all group">
-            <div className="w-12 h-12 rounded-lg bg-[#FF5A36]/10 flex items-center justify-center mb-6 text-[#FF5A36] group-hover:text-white transition-colors">
-                <Icon className="w-6 h-6" />
-            </div>
-            <h3 className="text-xl font-bold text-white mb-2">{title}</h3>
-            <p className="text-slate-400 text-sm leading-relaxed">{desc}</p>
-        </div>
-    )
-}
-
-function ComparisonItem({ text, sub, bad }: any) {
-    return (
-        <li className={`flex items-start gap-4 ${bad ? 'opacity-50' : ''}`}>
-            {bad ? <X className="text-red-500 w-5 h-5 mt-0.5" /> : <Check className="text-[#FF5A36] w-5 h-5 mt-0.5" />}
-            <div>
-                <strong className={`block ${bad ? 'text-slate-300' : 'text-white'}`}>{text}</strong>
-                <span className="text-sm text-slate-500">{sub}</span>
-            </div>
-        </li>
-    )
-}
-
-function InputGroup({ label, name, type, placeholder }: any) {
-    return (
-        <div className="flex flex-col text-left gap-1">
-            <label className="text-xs font-mono text-slate-500 ml-1">{label}</label>
-            <input name={name} type={type} required placeholder={placeholder}
-                className="w-full bg-[#020412]/50 border border-white/10 rounded-xl px-4 py-3 text-white placeholder:text-slate-600 focus:border-[#FF5A36] focus:ring-1 focus:ring-[#FF5A36] outline-none transition-all"
-            />
-        </div>
-    )
 }
