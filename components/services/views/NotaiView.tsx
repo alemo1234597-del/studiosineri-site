@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import Link from "next/link"; // 👇 ADDED THIS IMPORT
 import { submitNotai } from '@/app/actions/submit-notai'
 import {
     DraftingCompass, // Standard Apex Logo Icon
@@ -102,11 +103,11 @@ export default function NotaiView() {
             {/* HEADER / NAVBAR - EXACT COPY OF HOMEPAGE */}
             <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${scrolled ? 'py-4 bg-[#020617]/80 backdrop-blur-md border-b border-white/5' : 'py-6 bg-transparent'}`}>
                 <div className="container mx-auto px-6 flex items-center justify-between">
-                    {/* LOGO */}
-                    <div className="flex items-center gap-2 text-white hover:opacity-80 transition-opacity cursor-pointer">
+                    {/* 👇 LOGO FIXED: Now wrapped in a Link tag pointing to "/" */}
+                    <Link href="/" className="flex items-center gap-2 text-white hover:opacity-80 transition-opacity cursor-pointer">
                         <DraftingCompass className="w-6 h-6 text-[#FF5A36]" />
                         <span className="font-bold tracking-tight text-lg">APEX</span>
-                    </div>
+                    </Link>
 
                     {/* DESKTOP LINKS */}
                     <div className="hidden md:flex items-center gap-8">
@@ -320,7 +321,7 @@ export default function NotaiView() {
             </section>
 
             {/* COMPARISON SECTION */}
-            <section id="comparison" className="py-20 px-6 lg:px-20 bg-gradient-to-b from-[#0f172a] to-[#020412]">
+            <section className="py-20 px-6 lg:px-20 bg-gradient-to-b from-[#0f172a] to-[#020412]">
                 <div className="max-w-[960px] mx-auto">
                     <div className="bg-[#1e293b]/40 backdrop-blur-xl rounded-3xl overflow-hidden border border-white/10">
                         <div className="grid grid-cols-1 md:grid-cols-2">
